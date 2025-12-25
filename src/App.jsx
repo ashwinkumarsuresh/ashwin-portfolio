@@ -5,6 +5,7 @@ import CoreExpertise from './components/CoreExpertise';
 import KeyAchievements from './components/KeyAchievements';
 import Experience from './components/Experience';
 import Footer from './components/Footer';
+import ChatWidget from './components/ChatWidget';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Experience />
       </main>
       <Footer />
+      <ChatWidget />
     </div>
   );
 }

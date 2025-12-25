@@ -6,28 +6,28 @@ const experiences = [
     {
         role: "Senior Manager – AI and BI Architecture",
         company: "DineBrands Global",
-        period: "Aug 2015 – Present",
+        period: "Apr 2016 – Present",
         description: "Leading AI & BI architecture strategies, driving innovation through data-driven solutions.",
         type: "work"
     },
     {
         role: "BI Developer",
         company: "Peak Performance Marketing Solutions",
-        period: "Previous",
+        period: "Aug 2015 – Apr 2016",
         description: "Developed business intelligence solutions to optimize marketing performance.",
         type: "work"
     },
     {
         role: "BI Analyst",
         company: "Systech Solutions Inc",
-        period: "Previous",
+        period: "Jun 2014 – Aug 2015",
         description: "Analyzed data trends and implemented BI reporting tools.",
         type: "work"
     },
     {
         role: "Developer",
         company: "Systech Solutions Pvt Ltd",
-        period: "Previous",
+        period: "Aug 2010 – Jun 2014",
         description: "Software development and data engineering foundations.",
         type: "work"
     },
