@@ -13,6 +13,11 @@ To demonstrate technical expertise in LLM (Large Language Model) management whil
 
 The system is split into two main parts: a **Frontend** (what the user sees) and a **Backend** (where the AI logic lives).
 
+![System Architecture Diagram](public/assets/system-architecture.png)
+
+<details>
+<summary>View as text diagram (for accessibility)</summary>
+
 ```mermaid
 graph TD
     subgraph "Client Side (Browser)"
@@ -46,6 +51,7 @@ graph TD
 
     API -.-|Optional: Send Email| Email
 ```
+</details>
 
 ---
 
