@@ -85,25 +85,32 @@ We chose specific tools to balance **performance**, **simplicity**, and **cloud 
 "RAG" stands for **Retrieval-Augmented Generation**. It sounds complex, but here is the simple breakdown of what happens when a user asks: *"What did Ashwin do at Google?"*
 
 ```mermaid
-flowchart TD
-    Start([User Asks Question]) --> Vectorize[Convert Question to Vector]
-    Vectorize --> Search{Search Knowledge Base}
-    Search -->|Found Matches| Context[Retrieve Detailed Context]
-    Search -->|No Matches| Default[Use General Knowledge]
+sequenceDiagram
+    actor User as 👤 User
+    participant FE as 💻 Frontend
+    participant API as 🚀 Backend
+    participant DB as 🗄️ Firestore
+    participant AI as 🧠 Gemini AI
+
+    User->>FE: "What did Ashwin do at Google?"
+    FE->>API: POST /chat
     
-    Context --> Prompt[Construct System Prompt]
-    Default --> Prompt
-    
-    Prompt --> AI[Gemini AI Process]
-    AI --> Decide{Needs Tool?}
-    
-    Decide -->|Yes: Send Email| Email[Execute Email Tool]
-    Email --> Response[Confirm Action]
-    
-    Decide -->|No: Text Answer| Answer[Generate Answer]
-    Answer --> Response
-    
-    Response --> Display([Display to User])
+    rect rgb(240, 248, 255)
+        Note right of API: RAG Pipeline Starts
+        API->>DB: Search(query_vector)
+        DB-->>API: Returns relevant resume chunks
+        API->>AI: Send Prompt + Resume Context
+        AI-->>API: Generates Answer (based on context)
+    end
+
+    alt Tool Use Needed (e.g., "Email Ashwin")
+        AI-->>API: Function Call: send_email()
+        API->>API: Execute Function
+        API-->>AI: Return Function Result
+    end
+
+    API-->>FE: JSON Response
+    FE-->>User: Displays Answer
 ```
 
 
