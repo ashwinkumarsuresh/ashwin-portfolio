@@ -84,6 +84,29 @@ We chose specific tools to balance **performance**, **simplicity**, and **cloud 
 
 "RAG" stands for **Retrieval-Augmented Generation**. It sounds complex, but here is the simple breakdown of what happens when a user asks: *"What did Ashwin do at Google?"*
 
+```mermaid
+flowchart TD
+    Start([User Asks Question]) --> Vectorize[Convert Question to Vector]
+    Vectorize --> Search{Search Knowledge Base}
+    Search -->|Found Matches| Context[Retrieve Detailed Context]
+    Search -->|No Matches| Default[Use General Knowledge]
+    
+    Context --> Prompt[Construct System Prompt]
+    Default --> Prompt
+    
+    Prompt --> AI[Gemini AI Process]
+    AI --> Decide{Needs Tool?}
+    
+    Decide -->|Yes: Send Email| Email[Execute Email Tool]
+    Email --> Response[Confirm Action]
+    
+    Decide -->|No: Text Answer| Answer[Generate Answer]
+    Answer --> Response
+    
+    Response --> Display([Display to User])
+```
+
+
 ### Step 1: Retrieval (The "Search")
 The backend doesn't just ask the AI immediately. First, it looks through its **Knowledge Base** (stored in Firestore).
 *   It converts the user's question into a "vector" (a list of numbers).
