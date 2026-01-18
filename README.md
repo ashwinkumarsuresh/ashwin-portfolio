@@ -1,16 +1,43 @@
-# React + Vite
+# Ashwin's Personal Portfolio & Digital Twin
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A futuristic, interactive portfolio website featuring a "Digital Twin" AI assistant.
 
-Currently, two official plugins are available:
+**Live Site:** [https://ashwinkumars.com](https://ashwinkumars.com)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🏗️ Architecture & Documentation
 
-## React Compiler
+This project uses a modern tech stack designed for performance and scalability:
+- **Frontend:** React + Vite (hosted on Firebase)
+- **Backend:** FastAPI + LangChain (hosted on Cloud Run)
+- **AI:** Google Vertex AI (Gemini Models)
+- **Data:** Google Firestore (Vector Search + History)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+👉 **[Read the Full Architecture Guide](ARCHITECTURE.md)** for a detailed breakdown of the system design, tech stack decisions, and RAG pipeline.
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+- Node.js & npm
+- Python 3.11+
+- Google Cloud CLI
+
+### Installation
+
+1.  **Clone the repo**
+    ```bash
+    git clone ...
+    ```
+
+2.  **Install Frontend Dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Run Locally**
+    ```bash
+    npm run dev
+    ```
+    The site will be available at `http://localhost:3000`.
+
+## 🤖 Digital Twin Agent
+The AI assistant is capable of answering professional questions based on Ashwin's resume and project history. It uses a RAG (Retrieval-Augmented Generation) pipeline to ensure accuracy.
