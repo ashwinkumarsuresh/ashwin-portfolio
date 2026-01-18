@@ -7,7 +7,7 @@ const Hero = () => {
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="/assets/hero-bg.png"
+                    src="/assets/hero-bg.jpg"
                     alt="Background"
                     className="w-full h-full object-cover"
                 />
@@ -49,7 +49,7 @@ const Hero = () => {
                     className="hidden md:block relative"
                 >
                     <motion.img
-                        src="/assets/3d.png"
+                        src="/assets/3d.jpg"
                         alt="AI Architecture"
                         className="w-full max-w-lg mx-auto drop-shadow-2xl"
                         animate={{ y: [0, -20, 0] }}
