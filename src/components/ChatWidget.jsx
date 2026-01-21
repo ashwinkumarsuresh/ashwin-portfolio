@@ -238,37 +238,71 @@ const ChatWidget = () => {
                 )}
             </AnimatePresence>
 
-            {/* Floating Button */}
-            <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setIsOpen(!isOpen)}
-                className="bg-gradient-to-br from-gold-500 to-gold-600 text-slate-900 w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow"
-            >
-                <AnimatePresence mode="wait">
-                    {isOpen ? (
+            {/* Floating Button with Label */}
+            <div className="flex items-center gap-3">
+                {/* Floating Label */}
+                <AnimatePresence>
+                    {!isOpen && (
                         <motion.div
-                            key="close"
-                            initial={{ rotate: -90, opacity: 0 }}
-                            animate={{ rotate: 0, opacity: 1 }}
-                            exit={{ rotate: 90, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 20 }}
+                            transition={{ duration: 0.3 }}
+                            className="relative flex items-center"
                         >
-                            <X className="w-6 h-6" />
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="open"
-                            initial={{ rotate: -90, opacity: 0 }}
-                            animate={{ rotate: 0, opacity: 1 }}
-                            exit={{ rotate: 90, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                        >
-                            <MessageCircle className="w-6 h-6" />
+                            <div
+                                onClick={() => setIsOpen(true)}
+                                className="bg-gradient-to-r from-gold-500 to-gold-600 text-slate-900 px-4 py-2 rounded-full shadow-lg whitespace-nowrap cursor-pointer hover:shadow-xl transition-shadow"
+                            >
+                                <motion.span
+                                    animate={{ opacity: [1, 0.7, 1] }}
+                                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                    className="text-sm font-bold"
+                                >
+                                    Ask My AI Assistant
+                                </motion.span>
+                            </div>
+                            {/* Arrow pointing to chat bubble */}
+                            <div
+                                onClick={() => setIsOpen(true)}
+                                className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-gold-600 ml-[-1px] cursor-pointer"
+                            ></div>
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </motion.button>
+
+                {/* Chat Button */}
+                <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="bg-gradient-to-br from-gold-500 to-gold-600 text-slate-900 w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow"
+                >
+                    <AnimatePresence mode="wait">
+                        {isOpen ? (
+                            <motion.div
+                                key="close"
+                                initial={{ rotate: -90, opacity: 0 }}
+                                animate={{ rotate: 0, opacity: 1 }}
+                                exit={{ rotate: 90, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <X className="w-6 h-6" />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="open"
+                                initial={{ rotate: -90, opacity: 0 }}
+                                animate={{ rotate: 0, opacity: 1 }}
+                                exit={{ rotate: 90, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <MessageCircle className="w-6 h-6" />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.button>
+            </div>
         </div>
     );
 };
