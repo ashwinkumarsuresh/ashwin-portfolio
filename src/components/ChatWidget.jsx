@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
+const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL || 'https://digital-twin-agent-988262606076.us-central1.run.app';
+const CHAT_API_KEY = import.meta.env.VITE_CHAT_API_KEY;
+
 const ChatWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
@@ -71,11 +74,11 @@ const ChatWidget = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch('https://digital-twin-agent-988262606076.us-central1.run.app/chat', {
+            const response = await fetch(`${CHAT_API_URL}/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-API-Key': '7f44101773872e75776916fdb36c2e7ad3ec103bc7f75653fd367bd254f75ba5',
+                    ...(CHAT_API_KEY ? { 'X-API-Key': CHAT_API_KEY } : {}),
                 },
                 body: JSON.stringify({
                     message: inputMessage,
