@@ -7,7 +7,7 @@ import React from 'react';
 const entries = [
     {
         num: '01',
-        body: 'AI Innovation Foundry — virtual lab incubating GenAI solutions with Microsoft, Google, and Cognizant; Gen AI ordering and culinary assistants among the deliveries.',
+        body: 'AI Innovation Foundry — virtual lab incubating GenAI solutions with AWS, GCP, and Microsoft Azure. Gen AI ordering and culinary assistants among the deliveries.',
         metric: '15 SHIPPED OR ENABLED · 4 STOPPED',
     },
     {

@@ -19,10 +19,11 @@ const Hero = () => {
                     </h1>
                     <hr className="w-24 border-0 border-t-[3px] border-ochre mb-7" />
                     <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink/85">
-                        Built the recommendation engine behind a 1–2% site-wide sales lift; led the
-                        data platform recognized with a 2024 CIO 100 Award. Now shipping enterprise
-                        GenAI applications — most recently Menu Without Borders, processing thousands
-                        of international menu items a day.
+                        Enterprise data architect turned AI builder. Led the award-winning data
+                        platform behind a 2024 CIO 100 Award and engineered a recommendation engine
+                        driving a 1–2% site-wide sales lift. Now shipping production-grade GenAI
+                        applications, including Menu Without Borders, an automated pipeline
+                        processing thousands of international menu items a day.
                     </p>
                 </div>
                 <picture className="order-first md:order-none mb-8 md:mb-0 justify-self-center md:justify-self-end">
