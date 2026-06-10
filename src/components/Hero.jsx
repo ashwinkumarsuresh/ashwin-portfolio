@@ -21,9 +21,12 @@ const Hero = () => {
                     <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink/85">
                         Enterprise data architect turned AI builder. Led the award-winning data
                         platform behind a 2024 CIO 100 Award and engineered a recommendation engine
-                        driving a 1–2% site-wide sales lift. Now shipping production-grade GenAI
-                        applications, including Menu Without Borders, an automated pipeline
-                        processing thousands of international menu items a day.
+                        driving a 1–2% site-wide sales lift.
+                    </p>
+                    <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink mt-4">
+                        <em className="font-semibold">Now shipping production-grade GenAI applications</em> —
+                        including Menu Without Borders, an automated pipeline processing thousands
+                        of international menu items a day.
                     </p>
                 </div>
                 <picture className="order-first md:order-none mb-8 md:mb-0 justify-self-center md:justify-self-end">
