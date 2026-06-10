@@ -46,23 +46,22 @@ const DigitalTwinCaseStudy = () => {
                         resume and project documents, not from memory, so replies stay grounded.
                     </Sidenote>
 
-                    {/* Figure spans main column */}
+                    {/* Figure spans main column — transparent sketch sits directly on the
+                        paper (same alpha treatment as the masthead portrait, no card). */}
                     <figure className="mt-8 md:mt-0 md:col-start-1">
-                        <div className="bg-white border border-rule-soft p-4 md:p-6">
-                            <picture>
-                                <source srcSet="/assets/system-architecture.webp" type="image/webp" />
-                                <img
-                                    src="/assets/system-architecture.png"
-                                    alt="System architecture of the Digital Twin: React frontend, FastAPI backend on Cloud Run, Firestore vector search, and Gemini via Vertex AI"
-                                    width="1024"
-                                    height="1024"
-                                    loading="lazy"
-                                    className="w-full h-auto"
-                                />
-                            </picture>
-                        </div>
-                        <figcaption className="font-mono text-[11px] text-ink-soft mt-2">
-                            Fig. 1 — Architecture overview.
+                        <picture>
+                            <source srcSet="/assets/arc-diagram.webp" type="image/webp" />
+                            <img
+                                src="/assets/arc-diagram.png"
+                                alt="System architecture of the Digital Twin: user to React frontend on Firebase Hosting, FastAPI backend on Cloud Run, Vertex AI (Gemini) and Firestore inside Google Cloud, Brevo email API"
+                                width="1600"
+                                height="873"
+                                loading="lazy"
+                                className="w-full h-auto"
+                            />
+                        </picture>
+                        <figcaption className="font-mono text-[11px] text-ink-soft mt-2 border-t border-rule-soft pt-2">
+                            Fig. 1 — Architecture overview: the request path from visitor to grounded answer.
                         </figcaption>
                     </figure>
                     <div className="hidden md:block" />
