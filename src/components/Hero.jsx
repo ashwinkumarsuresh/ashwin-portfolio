@@ -2,7 +2,8 @@ import React from 'react';
 
 // Typographic masthead with a pencil-sketch portrait (op-ed style) — no photography,
 // no slogans (design doc: editorial "The Quarterly"; portrait added at owner request).
-// mix-blend-multiply melts the sketch's off-white paper into the site background.
+// The portrait asset carries real alpha (strokes only, background transparent) —
+// blend modes proved unreliable across browsers for hiding its paper background.
 // Every claim in the dek is verifiable: lift + award from KeyAchievements history,
 // Menu Without Borders from the attested abstract.
 const Hero = () => {
@@ -27,12 +28,12 @@ const Hero = () => {
                 <picture className="order-first md:order-none mb-8 md:mb-0 justify-self-center md:justify-self-end">
                     <source srcSet="/assets/ashwin-sketch.webp" type="image/webp" />
                     <img
-                        src="/assets/ashwin-sketch.jpg"
+                        src="/assets/ashwin-sketch.png"
                         alt="Pencil-sketch portrait of Ashwin Kumar Suresh"
-                        width="1200"
-                        height="1200"
+                        width="800"
+                        height="800"
                         fetchPriority="high"
-                        className="w-[220px] md:w-[340px] h-auto mix-blend-multiply"
+                        className="w-[220px] md:w-[340px] h-auto"
                     />
                 </picture>
             </div>
