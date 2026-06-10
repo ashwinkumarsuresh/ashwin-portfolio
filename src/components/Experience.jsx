@@ -1,89 +1,84 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Briefcase, GraduationCap, Calendar } from 'lucide-react';
 
+// Editorial entries — mono date left, role + outcomes right. No cards, no icons,
+// no timeline dots. CoreExpertise is folded in as the typeset toolbox below
+// (design doc section 5; anchor #skills retired).
 const experiences = [
     {
-        role: "Senior Manager – AI and BI Architecture",
-        company: "DineBrands Global",
-        period: "Apr 2016 – Present",
-        description: "Leading AI & BI architecture strategies, driving innovation through data-driven solutions.",
-        type: "work"
+        role: 'Senior Manager — AI and BI Architecture',
+        company: 'Dine Brands Global',
+        period: '2016 — NOW',
+        description:
+            'Leads AI and BI architecture across Applebee’s and IHOP: the AI Innovation Foundry, recommendation engine, customer data platform, and the Teradata-to-Redshift / MicroStrategy ONE cloud transformation.',
     },
     {
-        role: "BI Developer",
-        company: "Peak Performance Marketing Solutions",
-        period: "Aug 2015 – Apr 2016",
-        description: "Developed business intelligence solutions to optimize marketing performance.",
-        type: "work"
+        role: 'BI Developer',
+        company: 'Peak Performance Marketing Solutions',
+        period: '2015 — 2016',
+        description: 'Business intelligence for marketing performance optimization.',
     },
     {
-        role: "BI Analyst",
-        company: "Systech Solutions Inc",
-        period: "Jun 2014 – Aug 2015",
-        description: "Analyzed data trends and implemented BI reporting tools.",
-        type: "work"
+        role: 'BI Analyst',
+        company: 'Systech Solutions Inc',
+        period: '2014 — 2015',
+        description: 'Data trend analysis and BI reporting tooling.',
     },
     {
-        role: "Developer",
-        company: "Systech Solutions Pvt Ltd",
-        period: "Aug 2010 – Jun 2014",
-        description: "Software development and data engineering foundations.",
-        type: "work"
+        role: 'Developer',
+        company: 'Systech Solutions Pvt Ltd',
+        period: '2010 — 2014',
+        description: 'Software development and data engineering foundations.',
     },
     {
-        role: "B.E., Electronics and Control Engineering",
-        company: "Sathyabama University",
-        period: "2009",
-        description: "Foundation in engineering principles and control systems.",
-        type: "education"
-    }
+        role: 'B.E., Electronics and Control Engineering',
+        company: 'Sathyabama University',
+        period: '2009',
+        description: 'Engineering principles and control systems.',
+    },
+];
+
+const toolbox = [
+    ['Generative AI', 'Amazon Bedrock, Q Business, Copilot Studio'],
+    ['Agent frameworks', 'LangChain, ADK, Strands'],
+    ['ML platforms', 'SageMaker, Vertex AI, scikit-learn'],
+    ['Cloud', 'AWS, GCP, Azure'],
+    ['Analytics', 'MicroStrategy, Tableau, Power BI'],
+    ['Data engineering', 'Informatica, SSIS, DataStage'],
+    ['Warehouses', 'Redshift, BigQuery, Teradata, SQL Server'],
 ];
 
 const Experience = () => {
     return (
-        <section id="experience" className="py-20 relative">
-            <div className="container mx-auto px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-4xl font-bold mb-4">Professional <span className="text-gradient">Journey</span></h2>
-                    <p className="text-gray-400">A timeline of growth, leadership, and technical excellence.</p>
-                </motion.div>
-
-                <div className="max-w-4xl mx-auto">
-                    {experiences.map((exp, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="relative pl-8 pb-12 last:pb-0 border-l border-white/10"
+        <section id="experience" className="py-12 md:py-16">
+            <div className="max-w-[1080px] mx-auto px-6">
+                <h2 className="font-mono text-[11px] tracking-[0.2em] uppercase text-ink-soft mb-2">
+                    Experience
+                </h2>
+                <div className="border-t border-ink">
+                    {experiences.map((exp) => (
+                        <div
+                            key={exp.period + exp.role}
+                            className="grid grid-cols-1 md:grid-cols-[150px_1fr] gap-x-6 py-5 border-b border-rule-soft"
                         >
-                            {/* Timeline Dot */}
-                            <div className={`absolute left-[-9px] top-0 w-4 h-4 rounded-full ${index === 0 ? 'bg-gold-500 animate-pulse' : 'bg-slate-700 border border-white/20'}`}></div>
-
-                            <div className="glass p-6 rounded-xl hover:bg-white/5 transition-all">
-                                <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
-                                    <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                                        {exp.type === 'education' ? <GraduationCap className="w-5 h-5 text-gold-400" /> : <Briefcase className="w-5 h-5 text-gold-400" />}
-                                        {exp.role}
-                                    </h3>
-                                    <span className="text-sm text-gold-400/80 flex items-center gap-1 mt-1 md:mt-0">
-                                        <Calendar className="w-4 h-4" />
-                                        {exp.period}
-                                    </span>
-                                </div>
-                                <h4 className="text-lg text-gray-300 mb-2">{exp.company}</h4>
-                                <p className="text-gray-400 text-sm">{exp.description}</p>
+                            <span className="font-mono text-[11px] text-ink-soft pt-1">{exp.period}</span>
+                            <div>
+                                <h3 className="font-display font-semibold text-lg">{exp.role}</h3>
+                                <p className="text-[15px] text-ink-soft">{exp.company}</p>
+                                <p className="text-[15px] leading-relaxed mt-1.5 text-ink/80">{exp.description}</p>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
+
+                <p className="mt-8 text-[15px] leading-[1.9] max-w-[720px] text-ink/80">
+                    {toolbox.map(([label, items], i) => (
+                        <span key={label}>
+                            <span className="font-mono text-[11px] tracking-wide uppercase text-ink-soft">{label}</span>{' '}
+                            — {items}
+                            {i < toolbox.length - 1 ? ' · ' : ''}
+                        </span>
+                    ))}
+                </p>
             </div>
         </section>
     );
