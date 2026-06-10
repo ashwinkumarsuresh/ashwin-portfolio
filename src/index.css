@@ -2,20 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Self-hosted variable fonts (eng-review decision 1A): files live in public/fonts/
+   with stable URLs so the index.html preloads always match. */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-var.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/newsreader-var.woff2') format('woff2-variations');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/newsreader-italic-var.woff2') format('woff2-variations');
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-var.woff2') format('woff2-variations');
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+/* Size-adjusted Georgia fallbacks: hold layout while the webfonts load (no-CLS
+   success criterion). Values approximate Fraunces/Newsreader metrics over
+   Georgia; tune against Chrome DevTools font overrides if the masthead shifts. */
+@font-face {
+  font-family: 'fraunces-fallback';
+  src: local('Georgia');
+  size-adjust: 98%;
+  ascent-override: 96%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'newsreader-fallback';
+  src: local('Georgia');
+  size-adjust: 94%;
+  ascent-override: 79%;
+  descent-override: 23%;
+  line-gap-override: 0%;
+}
+
 @layer base {
   body {
-    @apply bg-slate-900 text-white font-sans antialiased;
+    @apply bg-paper text-ink font-serif antialiased;
+  }
+  ::selection {
+    @apply bg-ochre/20 text-ink;
   }
 }
 
-@layer utilities {
-  .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
+/* Masthead settle (eng-review decisions 3A/14A): the one animation on the page,
+   CSS-only so framer-motion stays out of page components. */
+@media (prefers-reduced-motion: no-preference) {
+  .masthead-settle {
+    animation: masthead-settle 0.7s ease-out both;
   }
-  .glass-hover {
-    @apply hover:bg-white/10 transition-all duration-300;
-  }
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-400 to-gold-600;
+  @keyframes masthead-settle {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
   }
 }

@@ -1,24 +1,24 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import CoreExpertise from './components/CoreExpertise';
-import KeyAchievements from './components/KeyAchievements';
+import SelectedWork from './components/SelectedWork';
+import DigitalTwinCaseStudy from './components/DigitalTwinCaseStudy';
 import Experience from './components/Experience';
 import Footer from './components/Footer';
-import ChatWidget from './components/ChatWidget';
+import ChatLauncher from './components/ChatLauncher';
 
 function App() {
   return (
-    <div className="bg-slate-900 min-h-screen text-white selection:bg-gold-500/30 selection:text-gold-400">
+    <div className="bg-paper min-h-screen text-ink">
       <Navbar />
       <main>
         <Hero />
-        <CoreExpertise />
-        <KeyAchievements />
+        <SelectedWork />
+        <DigitalTwinCaseStudy />
         <Experience />
       </main>
       <Footer />
-      <ChatWidget />
+      <ChatLauncher />
     </div>
   );
 }
