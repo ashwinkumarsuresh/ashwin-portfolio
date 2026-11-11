@@ -24,7 +24,7 @@ describe('ChatPanel (regression guard)', () => {
 
     it('completes a send→reply round-trip and persists to localStorage', async () => {
         const user = userEvent.setup();
-        vi.spyOn(global, 'fetch').mockResolvedValue({
+        vi.spyOn(globalThis, 'fetch').mockResolvedValue({
             ok: true,
             json: async () => ({ response: 'He led the AI Foundry.' }),
         });
@@ -39,7 +39,7 @@ describe('ChatPanel (regression guard)', () => {
         expect(stored.map((m) => m.sender)).toEqual(['bot', 'user', 'bot']);
 
         // Request shape pinned: POST {url}/chat with message + session_id
-        const [url, opts] = global.fetch.mock.calls[0];
+        const [url, opts] = globalThis.fetch.mock.calls[0];
         expect(url).toMatch(/\/chat$/);
         const body = JSON.parse(opts.body);
         expect(body.message).toBe('What did Ashwin build?');
@@ -49,7 +49,7 @@ describe('ChatPanel (regression guard)', () => {
     it('renders a user-visible error after retries are exhausted (no silent hang)', async () => {
         const user = userEvent.setup();
         vi.useFakeTimers({ shouldAdvanceTime: true });
-        vi.spyOn(global, 'fetch').mockResolvedValue({ ok: false, status: 500 });
+        vi.spyOn(globalThis, 'fetch').mockResolvedValue({ ok: false, status: 500 });
 
         render(<ChatPanel isOpen={true} onClose={() => {}} />);
         await typeAndSend(user, 'hello');
@@ -59,7 +59,7 @@ describe('ChatPanel (regression guard)', () => {
             () => expect(screen.getByText(/having trouble connecting/i)).toBeInTheDocument(),
             { timeout: 10000 }
         );
-        expect(global.fetch).toHaveBeenCalledTimes(3);
+        expect(globalThis.fetch).toHaveBeenCalledTimes(3);
         vi.useRealTimers();
     });
 

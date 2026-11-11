@@ -31,7 +31,7 @@ const Footer = () => {
                 </div>
 
                 <div className="border-t border-rule-soft mt-10 pt-5 flex flex-col md:flex-row justify-between gap-2 font-mono text-[11px] text-ink-soft">
-                    <span>© 2026 Ashwin Kumar Suresh</span>
+                    <span>© {new Date().getFullYear()} Ashwin Kumar Suresh</span>
                     <span>Set in Fraunces &amp; Newsreader · Built with React</span>
                 </div>
             </div>
