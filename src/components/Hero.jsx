@@ -12,7 +12,7 @@ const Hero = () => {
             <div className="max-w-[1080px] mx-auto px-6 masthead-settle grid grid-cols-1 md:grid-cols-[1fr_340px] gap-x-12 items-center">
                 <div>
                     <p className="font-mono text-[11px] tracking-[0.18em] uppercase text-ochre">
-                        Senior Manager · AI &amp; BI Architecture · 15 Years
+                        Senior Manager · AI &amp; BI Architecture · 16 Years
                     </p>
                     <h1 className="font-display font-semibold text-[clamp(3.5rem,9vw,6.5rem)] leading-[0.98] tracking-tight mt-5 mb-4">
                         Ashwin Kumar<br />Suresh
