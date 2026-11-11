@@ -1,0 +1,108 @@
+name: Build and deploy
+
+# Pull requests: run tests, build, and post a 7-day Firebase preview link.
+# Pushes to main (a merged PR): run tests, build, and deploy to ashwinkumars.com.
+#
+# One-time setup, two repository secrets:
+#   FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E  service account JSON with
+#       Firebase Hosting access (`firebase init hosting:github` creates it).
+#   VITE_CHAT_API_KEY  the chat backend key, same value as in .env.local. Vite
+#       compiles it into the bundle, so without it the live chat stops working;
+#       the main-branch build fails instead of shipping that.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Tests + build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test
+      - name: Check chat key is set
+        if: github.event_name != 'pull_request'
+        env:
+          VITE_CHAT_API_KEY: ${{ secrets.VITE_CHAT_API_KEY }}
+        run: |
+          if [ -z "$VITE_CHAT_API_KEY" ]; then
+            echo "::error::Repository secret VITE_CHAT_API_KEY is not set; the deployed chat would fail."
+            exit 1
+          fi
+      - run: npm run build
+        env:
+          VITE_CHAT_API_KEY: ${{ secrets.VITE_CHAT_API_KEY }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 3
+
+  preview:
+    name: Preview channel
+    needs: build
+    # Secrets aren't available to Dependabot or fork PRs, so they get tests + build only.
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+    steps:
+      - name: Check deploy secret is set
+        id: secret
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E }}
+        run: |
+          if [ -n "$SA" ]; then echo "present=true" >> "$GITHUB_OUTPUT"
+          else echo "::warning::FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E is not set; skipping the preview."; fi
+      - uses: actions/checkout@v4
+        if: steps.secret.outputs.present == 'true'
+      - uses: actions/download-artifact@v4
+        if: steps.secret.outputs.present == 'true'
+        with:
+          name: dist
+          path: dist
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        if: steps.secret.outputs.present == 'true'
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E }}
+          projectId: ashwin-portfolio-dac5e
+          expires: 7d
+
+  deploy:
+    name: Deploy to ashwinkumars.com
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # An older run finishing after a newer one would put stale files live.
+    concurrency:
+      group: live-deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E }}
+          projectId: ashwin-portfolio-dac5e
+          channelId: live
