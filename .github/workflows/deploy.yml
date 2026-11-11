@@ -3,12 +3,18 @@ name: Build and deploy
 # Pull requests: run tests, build, and post a 7-day Firebase preview link.
 # Pushes to main (a merged PR): run tests, build, and deploy to ashwinkumars.com.
 #
-# One-time setup, two repository secrets:
-#   FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E  service account JSON with
-#       Firebase Hosting access (`firebase init hosting:github` creates it).
-#   VITE_CHAT_API_KEY  the chat backend key, same value as in .env.local. Vite
-#       compiles it into the bundle, so without it the live chat stops working;
-#       the main-branch build fails instead of shipping that.
+# GitHub signs in to Google Cloud with Workload Identity Federation, so no
+# service-account key is stored in GitHub, and the chat key is read from
+# Secret Manager at build time. scripts/bootstrap-cicd.sh creates the pool,
+# provider and service accounts; it prints the repository variables used here:
+#   GCP_PROJECT_ID       ashwin-portfolio-dac5e
+#   WIF_PROVIDER         projects/<number>/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
+#   GH_DEPLOY_SA         github-deploy-sa@...  (live site; main branch only)
+#   GH_PREVIEW_SA        github-preview-sa@... (preview channels; pull_request events only)
+#   CHAT_API_KEY_SECRET  <project>/<secret name> of the chat backend key
+#
+# Vite compiles the chat key into the public bundle, so the main-branch build
+# fails if it can't read it instead of shipping a chat that can't reach its backend.
 
 on:
   pull_request:
@@ -19,10 +25,20 @@ on:
 permissions:
   contents: read
 
+env:
+  FIREBASE_TOOLS_VERSION: 15.35.0
+
 jobs:
   build:
     name: Tests + build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      # Runs that can sign in to GCP: same-repo PRs (not Dependabot), and main.
+      # Fork and Dependabot PRs get no OIDC token, so they build without the key.
+      TRUSTED: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]') || (github.event_name != 'pull_request' && github.ref == 'refs/heads/main') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,65 +47,106 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm test
-      - name: Check chat key is set
-        if: github.event_name != 'pull_request'
+      - name: Check GCP setup
+        id: setup
+        if: env.TRUSTED == 'true'
         env:
-          VITE_CHAT_API_KEY: ${{ secrets.VITE_CHAT_API_KEY }}
+          WIF_PROVIDER: ${{ vars.WIF_PROVIDER }}
+        run: |
+          if [ -n "$WIF_PROVIDER" ]; then echo "ready=true" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "::warning::Repository variable WIF_PROVIDER is not set; building without the chat key and skipping the preview."
+          else
+            echo "::error::Repository variable WIF_PROVIDER is not set; run scripts/bootstrap-cicd.sh first."
+            exit 1
+          fi
+      - uses: google-github-actions/auth@v2
+        if: steps.setup.outputs.ready == 'true'
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ github.event_name == 'pull_request' && vars.GH_PREVIEW_SA || vars.GH_DEPLOY_SA }}
+      - id: secrets
+        if: steps.setup.outputs.ready == 'true'
+        uses: google-github-actions/get-secretmanager-secrets@v2
+        with:
+          secrets: |-
+            chat_key:${{ vars.CHAT_API_KEY_SECRET }}
+      - name: Check chat key was read
+        if: steps.setup.outputs.ready == 'true'
+        env:
+          VITE_CHAT_API_KEY: ${{ steps.secrets.outputs.chat_key }}
         run: |
           if [ -z "$VITE_CHAT_API_KEY" ]; then
-            echo "::error::Repository secret VITE_CHAT_API_KEY is not set; the deployed chat would fail."
+            echo "::error::Secret ${{ vars.CHAT_API_KEY_SECRET }} came back empty; the deployed chat would fail."
             exit 1
           fi
       - run: npm run build
         env:
-          VITE_CHAT_API_KEY: ${{ secrets.VITE_CHAT_API_KEY }}
+          VITE_CHAT_API_KEY: ${{ steps.secrets.outputs.chat_key }}
       - uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist
           retention-days: 3
+    outputs:
+      gcp_ready: ${{ steps.setup.outputs.ready }}
 
   preview:
     name: Preview channel
     needs: build
-    # Secrets aren't available to Dependabot or fork PRs, so they get tests + build only.
-    if: >-
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      github.actor != 'dependabot[bot]'
+    if: github.event_name == 'pull_request' && needs.build.outputs.gcp_ready == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      checks: write
+      id-token: write
       pull-requests: write
     steps:
-      - name: Check deploy secret is set
-        id: secret
-        env:
-          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E }}
-        run: |
-          if [ -n "$SA" ]; then echo "present=true" >> "$GITHUB_OUTPUT"
-          else echo "::warning::FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E is not set; skipping the preview."; fi
       - uses: actions/checkout@v4
-        if: steps.secret.outputs.present == 'true'
       - uses: actions/download-artifact@v4
-        if: steps.secret.outputs.present == 'true'
         with:
           name: dist
           path: dist
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        if: steps.secret.outputs.present == 'true'
+      - id: auth
+        uses: google-github-actions/auth@v2
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E }}
-          projectId: ashwin-portfolio-dac5e
-          expires: 7d
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.GH_PREVIEW_SA }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm i -g "firebase-tools@${FIREBASE_TOOLS_VERSION}"
+      - name: Deploy preview channel
+        id: preview
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
+        run: |
+          OUTPUT=$(firebase hosting:channel:deploy "pr-${{ github.event.number }}" \
+            --project "${{ vars.GCP_PROJECT_ID }}" --expires 7d --json --non-interactive)
+          URL=$(echo "$OUTPUT" | jq -r '.result | to_entries[0].value.url')
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+      - name: Post or update the preview link on the PR
+        uses: actions/github-script@v7
+        env:
+          URL: ${{ steps.preview.outputs.url }}
+        with:
+          script: |
+            const marker = '<!-- firebase-preview -->';
+            const body = `${marker}\nPreview: ${process.env.URL} (expires in 7 days, updated for ${context.sha.slice(0, 7)})`;
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const mine = comments.find(c => c.body && c.body.startsWith(marker));
+            if (mine) await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
+            else await github.rest.issues.createComment({ owner, repo, issue_number, body });
 
   deploy:
     name: Deploy to ashwinkumars.com
     needs: build
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     # An older run finishing after a newer one would put stale files live.
     concurrency:
       group: live-deploy
@@ -100,9 +157,15 @@ jobs:
         with:
           name: dist
           path: dist
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - id: auth
+        uses: google-github-actions/auth@v2
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ASHWIN_PORTFOLIO_DAC5E }}
-          projectId: ashwin-portfolio-dac5e
-          channelId: live
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.GH_DEPLOY_SA }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm i -g "firebase-tools@${FIREBASE_TOOLS_VERSION}"
+      - run: firebase deploy --only hosting --project "${{ vars.GCP_PROJECT_ID }}" --non-interactive
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
