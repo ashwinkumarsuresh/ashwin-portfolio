@@ -9,8 +9,10 @@ import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-ch
 //
 // App Check (reCAPTCHA Enterprise) proves requests come from this site, so the
 // Gemini quota behind the chat can't be spent by scripts calling the API
-// directly. The reCAPTCHA site key is a public identifier, not a secret.
-export const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+// directly. The reCAPTCHA Enterprise site key is a public identifier, not a
+// secret; VITE_RECAPTCHA_SITE_KEY can override it for testing another key.
+export const RECAPTCHA_SITE_KEY =
+    import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6Lc78RsuAAAAAEEtGupOMoqjUE2jNpOks-_Q2AbU';
 
 async function loadConfig() {
     if (import.meta.env.VITE_FIREBASE_CONFIG) {
@@ -41,7 +43,7 @@ export function getFirebaseApp() {
                     isTokenAutoRefreshEnabled: true,
                 });
             } else {
-                console.warn('VITE_RECAPTCHA_SITE_KEY is not set; App Check is off and the chat will be refused once it is enforced.');
+                console.warn('No reCAPTCHA site key; App Check is off and the chat will be refused once it is enforced.');
             }
             return app;
         })().catch((err) => {
