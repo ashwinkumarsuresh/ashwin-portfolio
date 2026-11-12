@@ -1,52 +1,9 @@
 import React from 'react';
+import { experiences, toolbox } from '../data/profile';
 
 // Editorial entries — mono date left, role + outcomes right. No cards, no icons,
 // no timeline dots. CoreExpertise is folded in as the typeset toolbox below
 // (design doc section 5; anchor #skills retired).
-const experiences = [
-    {
-        role: 'Senior Manager — AI and BI Architecture',
-        company: 'Dine Brands Global',
-        period: '2016 — NOW',
-        description:
-            'Leads AI and BI architecture across Applebee’s and IHOP: the AI Innovation Foundry, recommendation engine, customer data platform, and the Teradata-to-Redshift / MicroStrategy ONE cloud transformation.',
-    },
-    {
-        role: 'BI Developer',
-        company: 'Peak Performance Marketing Solutions',
-        period: '2015 — 2016',
-        description: 'Business intelligence for marketing performance optimization.',
-    },
-    {
-        role: 'BI Analyst',
-        company: 'Systech Solutions Inc',
-        period: '2014 — 2015',
-        description: 'Data trend analysis and BI reporting tooling.',
-    },
-    {
-        role: 'Developer',
-        company: 'Systech Solutions Pvt Ltd',
-        period: '2010 — 2014',
-        description: 'Software development and data engineering foundations.',
-    },
-    {
-        role: 'B.E., Electronics and Control Engineering',
-        company: 'Sathyabama University',
-        period: '2009',
-        description: 'Engineering principles and control systems.',
-    },
-];
-
-const toolbox = [
-    ['Generative AI', 'Amazon Bedrock, Q Business, Copilot Studio'],
-    ['Agent frameworks', 'LangChain, ADK, Strands'],
-    ['ML platforms', 'SageMaker, Vertex AI, scikit-learn'],
-    ['Cloud', 'AWS, GCP, Azure'],
-    ['Analytics', 'MicroStrategy, Tableau, Power BI'],
-    ['Data engineering', 'Informatica, SSIS, DataStage'],
-    ['Warehouses', 'Redshift, BigQuery, Teradata, SQL Server'],
-];
-
 const Experience = () => {
     return (
         <section id="experience" className="py-12 md:py-16">
