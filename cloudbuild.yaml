@@ -1,0 +1,50 @@
+# Cloud Build: test, build and (on main) deploy ashwinkumars.com to Firebase Hosting.
+#
+# Runs from a Cloud Build trigger connected to this GitHub repo in the Google
+# Cloud console, as a service account in project ashwin-portfolio-dac5e, so no
+# key or token is stored in GitHub. The Firebase CLI signs in as the trigger's
+# service account automatically.
+#
+# Two triggers share this file:
+#   main branch push  -> _DEPLOY=true, service account with Firebase Hosting Admin
+#   pull request      -> _DEPLOY=false (the default), service account with no
+#                        Firebase roles, so a PR can't publish even if it edits this file
+
+substitutions:
+  _DEPLOY: 'false'
+  _FIREBASE_TOOLS_VERSION: '15.35.0'
+
+steps:
+  - id: install
+    name: node:22
+    entrypoint: npm
+    args: ['ci']
+
+  - id: test
+    name: node:22
+    entrypoint: npm
+    args: ['test']
+
+  - id: build
+    name: node:22
+    entrypoint: npm
+    args: ['run', 'build']
+
+  - id: deploy
+    name: node:22
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        if [ "${_DEPLOY}" != "true" ]; then
+          echo "Not a main-branch build; skipping deploy."
+          exit 0
+        fi
+        npx --yes "firebase-tools@${_FIREBASE_TOOLS_VERSION}" deploy \
+          --only hosting --project "${PROJECT_ID}" --non-interactive
+
+options:
+  # Required when a trigger runs as a user-specified service account.
+  logging: CLOUD_LOGGING_ONLY
+
+timeout: 900s
