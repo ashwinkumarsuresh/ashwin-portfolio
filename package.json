@@ -12,12 +12,15 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "d3-geo": "^3.1.2",
     "firebase": "^13.3.0",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.554.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-markdown": "^10.1.0"
+    "react-markdown": "^10.1.0",
+    "topojson-client": "^3.1.0",
+    "us-atlas": "^3.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

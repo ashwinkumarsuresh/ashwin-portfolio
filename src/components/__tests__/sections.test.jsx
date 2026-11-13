@@ -54,7 +54,7 @@ describe('Navbar', () => {
     it('links match the anchor map and #skills is gone', () => {
         render(<Navbar />);
         const hrefs = screen.getAllByRole('link').map((a) => a.getAttribute('href'));
-        ['#about', '#projects', '#case-study', '#experience', '#contact'].forEach((id) =>
+        ['#about', '#projects', '#case-study', '#experience', '/atlas', '#contact'].forEach((id) =>
             expect(hrefs).toContain(id)
         );
         expect(hrefs).not.toContain('#skills');
