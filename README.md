@@ -41,3 +41,6 @@ This project uses a modern tech stack designed for performance and scalability:
 
 ## 🤖 Digital Twin Agent
 The AI assistant is capable of answering professional questions based on Ashwin's resume and project history. It uses a RAG (Retrieval-Augmented Generation) pipeline to ensure accuracy.
+
+## 🗺️ Travel atlas (`/atlas`)
+A page of family trips since 2021: map, timeline and parks passport. All of it comes from one hand-kept file, `src/data/trips.json` (places, months and parks only; never costs, stays, addresses or booking details). Add a trip there and the headline counts, map pins, timeline and passport update on their own. `route` is optional and draws a dashed town-to-town line; trips with an unknown date use `"start": null`, and a trip with no known place uses `"pin": null`.

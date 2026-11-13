@@ -8,16 +8,23 @@ const links = [
     { name: 'Work', href: '#projects' },
     { name: 'Case Study', href: '#case-study' },
     { name: 'Experience', href: '#experience' },
+    { name: 'Atlas', href: '/atlas' },
     { name: 'Contact', href: '#contact' },
 ];
 
+// Section anchors live on the home page; from /atlas they point back to it.
+const resolve = (href, onHome) => (href.startsWith('#') && !onHome ? `/${href}` : href);
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const path = window.location.pathname;
+    const onHome = path === '/' || path === '';
+    const isCurrent = (href) => !href.startsWith('#') && path.replace(/\/$/, '') === href;
 
     return (
         <nav className="fixed top-0 w-full z-40 bg-paper/95 backdrop-blur-sm border-b border-ink">
             <div className="max-w-[1080px] mx-auto px-6 flex justify-between items-baseline py-4">
-                <a href="#about" className="font-display font-bold text-base">
+                <a href={resolve('#about', onHome)} className="font-display font-bold text-base">
                     Ashwin K. Suresh
                 </a>
 
@@ -26,8 +33,11 @@ const Navbar = () => {
                     {links.map((link) => (
                         <a
                             key={link.name}
-                            href={link.href}
-                            className="font-mono text-[11px] tracking-[0.12em] uppercase text-ink-soft hover:text-ochre transition-colors"
+                            href={resolve(link.href, onHome)}
+                            aria-current={isCurrent(link.href) ? 'page' : undefined}
+                            className={`font-mono text-[11px] tracking-[0.12em] uppercase hover:text-ochre transition-colors ${
+                                isCurrent(link.href) ? 'text-ochre' : 'text-ink-soft'
+                            }`}
                         >
                             {link.name}
                         </a>
@@ -52,8 +62,11 @@ const Navbar = () => {
                         {links.map((link) => (
                             <a
                                 key={link.name}
-                                href={link.href}
-                                className="font-mono text-xs tracking-[0.12em] uppercase text-ink-soft hover:text-ochre"
+                                href={resolve(link.href, onHome)}
+                                aria-current={isCurrent(link.href) ? 'page' : undefined}
+                                className={`font-mono text-xs tracking-[0.12em] uppercase hover:text-ochre ${
+                                    isCurrent(link.href) ? 'text-ochre' : 'text-ink-soft'
+                                }`}
                                 onClick={() => setIsOpen(false)}
                             >
                                 {link.name}
