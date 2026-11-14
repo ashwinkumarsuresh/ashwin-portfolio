@@ -7,8 +7,9 @@ import {
     groupPins,
     matchesFilter,
     monthLabel,
+    earlierEntries,
+    earlierLabel,
     parkPassport,
-    stampBookStates,
     pinLabel,
     tripsByYear,
 } from '../lib/atlas';
@@ -17,7 +18,13 @@ import {
 // editorial style (paper, ink rules, mono labels, one ochre accent).
 // Data is hand-kept in src/data/trips.json: places, months and parks only —
 // never costs, stays, addresses or booking details.
-const { trips, parks, stampBook = [] } = data;
+const { trips, parks } = data;
+// Stamp-book parks from before the trip log: pinned and stamped, labelled "Before 2021".
+const earlier = earlierEntries(data.earlier);
+const entries = [...trips, ...earlier];
+const firstTripYear = Math.min(...trips.map((t) => t.year));
+const EARLIER = earlierLabel(firstTripYear);
+const yearLabel = (y) => (y === null ? EARLIER : y);
 
 const Label = ({ children, className = '' }) => (
     <h2 className={`font-mono text-[11px] tracking-[0.2em] uppercase text-ink-soft mb-2 ${className}`}>
@@ -48,7 +55,7 @@ const TripEntry = ({ trip, highlighted }) => {
                 highlighted ? 'border-l-ochre bg-ochre/[0.06]' : 'border-l-transparent'
             }`}
         >
-            <span className="font-mono text-[11px] text-ink-soft pt-1.5">{month ?? trip.year}</span>
+            <span className="font-mono text-[11px] text-ink-soft pt-1.5">{month ?? (trip.year === null ? '' : trip.year)}</span>
             <div>
                 <h4 className="font-display font-semibold text-lg leading-snug">{trip.name}</h4>
                 {trip.places.length > 0 && (
@@ -71,7 +78,7 @@ const ParkStamp = ({ park, index }) => (
                 {park.name}
             </span>
             <span className="font-mono text-[9px] tracking-[0.1em] text-ink-soft">
-                {park.firstYear ?? 'Stamp book'}
+                {yearLabel(park.firstYear)}
                 {park.visits > 1 ? ` · ×${park.visits}` : ''}
             </span>
         </div>
@@ -86,22 +93,13 @@ const AtlasPage = () => {
         document.title = 'Travel atlas — Ashwin Kumar Suresh';
     }, []);
 
-    const stats = useMemo(() => atlasStats(trips, stampBook, parks), []);
-    const passport = useMemo(() => parkPassport(trips, parks, stampBook), []);
+    const stats = useMemo(() => atlasStats(trips, earlier), []);
+    const passport = useMemo(() => parkPassport(entries, parks), []);
 
-    const visible = useMemo(() => trips.filter((t) => matchesFilter(t, filter)), [filter]);
+    const visible = useMemo(() => entries.filter((t) => matchesFilter(t, filter)), [filter]);
     const pins = useMemo(() => groupPins(visible), [visible]);
     const routes = useMemo(() => visible.filter((t) => t.route), [visible]);
-    // Stamp-book parks have no trip or pin, but their states still count as visited.
-    const visitedStates = useMemo(
-        () => [
-            ...new Set([
-                ...visible.flatMap((t) => t.states),
-                ...(filter === 'all' || filter === 'parks' ? stampBookStates(stampBook, parks) : []),
-            ]),
-        ],
-        [visible, filter]
-    );
+    const visitedStates = useMemo(() => [...new Set(visible.flatMap((t) => t.states))], [visible]);
     const years = useMemo(() => tripsByYear(visible), [visible]);
 
     // A pin hidden by the filter drops its selection without extra state.
@@ -205,7 +203,7 @@ const AtlasPage = () => {
                                     <li key={t.id} className="py-2 border-t border-rule-soft first:border-t-0">
                                         <a href={`#trip-${t.id}`} className="hover:text-ochre transition-colors">
                                             <span className="font-mono text-[11px] text-ink-soft mr-3">
-                                                {monthLabel(t) ? `${monthLabel(t)} ${t.year}` : t.year}
+                                                {monthLabel(t) ? `${monthLabel(t)} ${t.year}` : yearLabel(t.year)}
                                             </span>
                                             <span className="text-[16px]">{t.name}</span>
                                         </a>
@@ -225,10 +223,16 @@ const AtlasPage = () => {
                     <div className="border-t border-ink">
                         {years.map(([year, list]) => (
                             <div
-                                key={year}
+                                key={year ?? 'earlier'}
                                 className="grid grid-cols-1 md:grid-cols-[7rem_1fr] gap-x-6 border-b border-ink/70"
                             >
-                                <h3 className="font-display text-3xl text-rule-soft pt-4 md:pt-3">{year}</h3>
+                                <h3
+                                    className={`font-display text-rule-soft pt-4 md:pt-3 ${
+                                        year === null ? 'text-3xl md:text-2xl leading-tight' : 'text-3xl'
+                                    }`}
+                                >
+                                    {yearLabel(year)}
+                                </h3>
                                 <ol className="pl-3">
                                     {list.map((t) => (
                                         <TripEntry key={t.id} trip={t} highlighted={highlighted.has(t.id)} />
@@ -246,8 +250,8 @@ const AtlasPage = () => {
                     </Label>
                     <p className="text-[15px] text-ink/80 border-t border-ink pt-4 mb-6">
                         {passport.length} national parks, stamped in the order they were first visited.
-                        {stampBook.length > 0 &&
-                            ' The ones marked “stamp book” are ticked in the family’s park stamp book; their trips aren’t on this page yet.'}
+                        {earlier.length > 0 &&
+                            ` Those marked ${EARLIER} come from the family’s park stamp book, from trips before this log begins.`}
                     </p>
                     <ol className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4">
                         {passport.map((p, i) => (

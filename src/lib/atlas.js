@@ -38,15 +38,13 @@ export function monthLabel(trip) {
     return a === b ? a : `${a} – ${b}`;
 }
 
-// stampBook: parks ticked in the family's stamp book whose trip isn't on the
-// page (no year recorded). They count toward parks and states.
-export function stampBookStates(stampBook = [], parks = {}) {
-    return stampBook.map((id) => parks[id]?.state).filter(Boolean);
-}
-
-export function atlasStats(trips, stampBook = [], parks = {}) {
-    const parkIds = new Set([...trips.flatMap((t) => t.parks), ...stampBook]);
-    const states = new Set([...trips.flatMap((t) => t.states), ...stampBookStates(stampBook, parks)]);
+// `earlier` holds parks from the family's stamp book that predate the trip
+// log: no year, but a pin and a passport stamp. They count toward parks and
+// states, not toward trips or years on the road.
+export function atlasStats(trips, earlier = []) {
+    const all = [...trips, ...earlier];
+    const parkIds = new Set(all.flatMap((t) => t.parks));
+    const states = new Set(all.flatMap((t) => t.states));
     const years = trips.map((t) => t.year);
     const first = Math.min(...years);
     const last = Math.max(...years);
@@ -61,14 +59,22 @@ export function atlasStats(trips, stampBook = [], parks = {}) {
     };
 }
 
+// Label for entries with no year: "Before 2021" when the log starts in 2021.
+export const earlierLabel = (firstYear) => `Before ${firstYear}`;
+
+// Mark stamp-book parks as year-less entries the page can list beside trips.
+export const earlierEntries = (earlier = []) => earlier.map((e) => ({ ...e, year: null, start: null, end: null }));
+
 // Newest year first; trips keep the hand-kept file order within a year.
+// Entries with year null form the last group.
 export function tripsByYear(trips) {
     const byYear = new Map();
     for (const t of trips) {
         if (!byYear.has(t.year)) byYear.set(t.year, []);
         byYear.get(t.year).push(t);
     }
-    return [...byYear.entries()].sort((a, b) => b[0] - a[0]);
+    // Year-less (earlier) entries sort after the oldest year.
+    return [...byYear.entries()].sort((a, b) => (b[0] ?? -Infinity) - (a[0] ?? -Infinity));
 }
 
 export const pinKey = (pin) => `${pin.lat},${pin.lng}`;
@@ -93,29 +99,29 @@ export function pinLabel(group) {
     return place.replace(/,\s*[A-Z]{2}$/, '');
 }
 
-// Passport stamps in the order they were first collected; stamp-book parks
-// with no recorded year come last.
-export function parkPassport(trips, parks, stampBook = []) {
+// Passport stamps in the order they were first collected: the year-less
+// earlier parks first, then by first visit.
+export function parkPassport(entries, parks) {
     const visits = new Map();
-    for (const t of trips) {
+    for (const t of entries) {
         for (const id of t.parks) {
             if (!visits.has(id)) visits.set(id, []);
-            visits.get(id).push(t.year);
+            visits.get(id).push(t.year ?? null);
         }
     }
-    const stamps = [...visits.entries()].map(([id, years]) => ({
-        id,
-        name: parks[id]?.name ?? id,
-        state: parks[id]?.state ?? '',
-        firstYear: Math.min(...years),
-        visits: years.length,
-    }));
-    const undated = stampBook
-        .filter((id) => !visits.has(id))
-        .map((id) => ({ id, name: parks[id]?.name ?? id, state: parks[id]?.state ?? '', firstYear: null, visits: 0 }));
-    stamps.sort((a, b) => a.firstYear - b.firstYear || a.name.localeCompare(b.name));
-    undated.sort((a, b) => a.name.localeCompare(b.name));
-    return [...stamps, ...undated];
+    const rank = (y) => (y === null ? -Infinity : y);
+    return [...visits.entries()]
+        .map(([id, years]) => {
+            const dated = years.filter((y) => y !== null);
+            return {
+                id,
+                name: parks[id]?.name ?? id,
+                state: parks[id]?.state ?? '',
+                firstYear: years.includes(null) || !dated.length ? null : Math.min(...dated),
+                visits: years.length,
+            };
+        })
+        .sort((a, b) => rank(a.firstYear) - rank(b.firstYear) || a.name.localeCompare(b.name));
 }
 
 // Two-letter state code → Census FIPS id used by us-atlas.

@@ -133,12 +133,97 @@
       "state": "UT"
     }
   },
-  "stampBook": [
-    "bryce-canyon",
-    "channel-islands",
-    "grand-canyon",
-    "yellowstone",
-    "zion"
+  "earlier": [
+    {
+      "id": "zion-earlier",
+      "name": "Zion National Park",
+      "kind": "park",
+      "places": [
+        "Zion, UT"
+      ],
+      "states": [
+        "UT"
+      ],
+      "parks": [
+        "zion"
+      ],
+      "pin": {
+        "lat": 37.3,
+        "lng": -113.05
+      }
+    },
+    {
+      "id": "bryce-canyon-earlier",
+      "name": "Bryce Canyon National Park",
+      "kind": "park",
+      "places": [
+        "Bryce Canyon, UT"
+      ],
+      "states": [
+        "UT"
+      ],
+      "parks": [
+        "bryce-canyon"
+      ],
+      "pin": {
+        "lat": 37.57,
+        "lng": -112.18
+      }
+    },
+    {
+      "id": "grand-canyon-earlier",
+      "name": "Grand Canyon National Park",
+      "kind": "park",
+      "places": [
+        "Grand Canyon, AZ"
+      ],
+      "states": [
+        "AZ"
+      ],
+      "parks": [
+        "grand-canyon"
+      ],
+      "pin": {
+        "lat": 36.06,
+        "lng": -112.14
+      }
+    },
+    {
+      "id": "channel-islands-earlier",
+      "name": "Channel Islands National Park",
+      "kind": "park",
+      "places": [
+        "Channel Islands, CA"
+      ],
+      "states": [
+        "CA"
+      ],
+      "parks": [
+        "channel-islands"
+      ],
+      "pin": {
+        "lat": 34.01,
+        "lng": -119.42
+      }
+    },
+    {
+      "id": "yellowstone-earlier",
+      "name": "Yellowstone National Park",
+      "kind": "park",
+      "places": [
+        "Yellowstone, WY"
+      ],
+      "states": [
+        "WY"
+      ],
+      "parks": [
+        "yellowstone"
+      ],
+      "pin": {
+        "lat": 44.6,
+        "lng": -110.5
+      }
+    }
   ],
   "trips": [
     {

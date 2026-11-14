@@ -1,12 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import data from '../../data/trips.json';
-import { atlasStats, groupPins, matchesFilter, monthLabel, parkPassport, STATE_FIPS } from '../atlas';
+import { atlasStats, earlierEntries, groupPins, matchesFilter, monthLabel, parkPassport, STATE_FIPS, tripsByYear } from '../atlas';
 
 const { trips, parks } = data;
+const earlier = earlierEntries(data.earlier);
+const entries = [...trips, ...earlier];
 
 describe('trips.json', () => {
     it('matches the trips site: 25 trips, 33 parks, 14 states, 2021–2026', () => {
-        const s = atlasStats(trips, data.stampBook, parks);
+        const s = atlasStats(trips, earlier);
         expect(s).toMatchObject({ trips: 25, parks: 33, states: 14, firstYear: 2021, lastYear: 2026, years: 6 });
         expect(s.stateList).toEqual(['AK', 'AZ', 'CA', 'CO', 'HI', 'ME', 'NM', 'NV', 'NY', 'OR', 'TX', 'UT', 'WA', 'WY']);
     });
@@ -32,7 +34,11 @@ describe('trips.json', () => {
             t.states.forEach((s) => expect(STATE_FIPS[s], `${t.id} → ${s}`).toBeDefined());
             if (t.start) expect(t.start).toMatch(/^\d{4}-\d{2}$/);
         }
-        data.stampBook.forEach((p) => expect(parks[p], p).toBeDefined());
+        for (const e of data.earlier) {
+            e.parks.forEach((p) => expect(parks[p], p).toBeDefined());
+            expect(e.pin, e.id).toBeTruthy();
+            expect('year' in e, e.id).toBe(false);
+        }
     });
 
     it('draws route lines for the four big road trips', () => {
@@ -46,6 +52,13 @@ describe('trips.json', () => {
 });
 
 describe('atlas helpers', () => {
+    it('puts the year-less earlier parks after the oldest year', () => {
+        const groups = tripsByYear(entries);
+        expect(groups[0][0]).toBe(2026);
+        expect(groups.at(-1)[0]).toBeNull();
+        expect(groups.at(-1)[1]).toHaveLength(5);
+    });
+
     it('labels months and copes with unknown dates', () => {
         expect(monthLabel({ start: '2026-03', end: '2026-04' })).toBe('Mar – Apr');
         expect(monthLabel({ start: '2026-02', end: '2026-02' })).toBe('Feb');
@@ -57,6 +70,7 @@ describe('atlas helpers', () => {
         const vegas = groups.find((g) => g.key === '36.17,-115.14');
         expect(vegas.trips).toHaveLength(3);
         expect(groups.flatMap((g) => g.trips)).toHaveLength(25);
+        expect(groupPins(entries).flatMap((g) => g.trips)).toHaveLength(30);
         expect(groupPins([{ id: 'x', pin: null }])).toEqual([]);
     });
 
@@ -69,11 +83,13 @@ describe('atlas helpers', () => {
     });
 
     it('stamps each park once, in first-visit order, counting repeat visits', () => {
-        const passport = parkPassport(trips, parks, data.stampBook);
+        const passport = parkPassport(entries, parks);
         expect(passport).toHaveLength(33);
-        expect(passport.slice(-5).map((p) => p.id)).toEqual(data.stampBook);
-        expect(passport.slice(-5).every((p) => p.firstYear === null)).toBe(true);
-        expect(passport[0].firstYear).toBe(2021);
+        expect(passport.slice(0, 5).map((p) => p.name)).toEqual([
+            'Bryce Canyon', 'Channel Islands', 'Grand Canyon', 'Yellowstone', 'Zion',
+        ]);
+        expect(passport.slice(0, 5).every((p) => p.firstYear === null)).toBe(true);
+        expect(passport[5].firstYear).toBe(2021);
         expect(passport.find((p) => p.id === 'death-valley')).toMatchObject({ firstYear: 2023, visits: 2 });
     });
 });
