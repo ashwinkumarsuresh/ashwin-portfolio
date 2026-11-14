@@ -1,27 +1,117 @@
 {
   "parks": {
-    "petrified-forest": { "name": "Petrified Forest", "state": "AZ" },
-    "mesa-verde": { "name": "Mesa Verde", "state": "CO" },
-    "joshua-tree": { "name": "Joshua Tree", "state": "CA" },
-    "kenai-fjords": { "name": "Kenai Fjords", "state": "AK" },
-    "denali": { "name": "Denali", "state": "AK" },
-    "wrangell-st-elias": { "name": "Wrangell–St. Elias", "state": "AK" },
-    "pinnacles": { "name": "Pinnacles", "state": "CA" },
-    "death-valley": { "name": "Death Valley", "state": "CA" },
-    "acadia": { "name": "Acadia", "state": "ME" },
-    "sequoia": { "name": "Sequoia", "state": "CA" },
-    "kings-canyon": { "name": "Kings Canyon", "state": "CA" },
-    "arches": { "name": "Arches", "state": "UT" },
-    "redwood": { "name": "Redwood", "state": "CA" },
-    "olympic": { "name": "Olympic", "state": "WA" },
-    "mount-rainier": { "name": "Mount Rainier", "state": "WA" },
-    "crater-lake": { "name": "Crater Lake", "state": "OR" },
-    "carlsbad-caverns": { "name": "Carlsbad Caverns", "state": "NM" },
-    "white-sands": { "name": "White Sands", "state": "NM" },
-    "yosemite": { "name": "Yosemite", "state": "CA" },
-    "haleakala": { "name": "Haleakalā", "state": "HI" },
-    "rocky-mountain": { "name": "Rocky Mountain", "state": "CO" },
-    "great-sand-dunes": { "name": "Great Sand Dunes", "state": "CO" }
+    "petrified-forest": {
+      "name": "Petrified Forest",
+      "state": "AZ"
+    },
+    "mesa-verde": {
+      "name": "Mesa Verde",
+      "state": "CO"
+    },
+    "joshua-tree": {
+      "name": "Joshua Tree",
+      "state": "CA"
+    },
+    "kenai-fjords": {
+      "name": "Kenai Fjords",
+      "state": "AK"
+    },
+    "denali": {
+      "name": "Denali",
+      "state": "AK"
+    },
+    "wrangell-st-elias": {
+      "name": "Wrangell–St. Elias",
+      "state": "AK"
+    },
+    "pinnacles": {
+      "name": "Pinnacles",
+      "state": "CA"
+    },
+    "death-valley": {
+      "name": "Death Valley",
+      "state": "CA"
+    },
+    "acadia": {
+      "name": "Acadia",
+      "state": "ME"
+    },
+    "sequoia": {
+      "name": "Sequoia",
+      "state": "CA"
+    },
+    "kings-canyon": {
+      "name": "Kings Canyon",
+      "state": "CA"
+    },
+    "arches": {
+      "name": "Arches",
+      "state": "UT"
+    },
+    "redwood": {
+      "name": "Redwood",
+      "state": "CA"
+    },
+    "olympic": {
+      "name": "Olympic",
+      "state": "WA"
+    },
+    "mount-rainier": {
+      "name": "Mount Rainier",
+      "state": "WA"
+    },
+    "crater-lake": {
+      "name": "Crater Lake",
+      "state": "OR"
+    },
+    "carlsbad-caverns": {
+      "name": "Carlsbad Caverns",
+      "state": "NM"
+    },
+    "white-sands": {
+      "name": "White Sands",
+      "state": "NM"
+    },
+    "yosemite": {
+      "name": "Yosemite",
+      "state": "CA"
+    },
+    "haleakala": {
+      "name": "Haleakalā",
+      "state": "HI"
+    },
+    "rocky-mountain": {
+      "name": "Rocky Mountain",
+      "state": "CO"
+    },
+    "great-sand-dunes": {
+      "name": "Great Sand Dunes",
+      "state": "CO"
+    },
+    "canyonlands": {
+      "name": "Canyonlands",
+      "state": "UT"
+    },
+    "capitol-reef": {
+      "name": "Capitol Reef",
+      "state": "UT"
+    },
+    "black-canyon": {
+      "name": "Black Canyon of the Gunnison",
+      "state": "CO"
+    },
+    "north-cascades": {
+      "name": "North Cascades",
+      "state": "WA"
+    },
+    "guadalupe-mountains": {
+      "name": "Guadalupe Mountains",
+      "state": "TX"
+    },
+    "saguaro": {
+      "name": "Saguaro",
+      "state": "AZ"
+    }
   },
   "trips": [
     {
@@ -31,10 +121,26 @@
       "start": "2026-03",
       "end": "2026-04",
       "kind": "road-trip",
-      "places": ["Holbrook, AZ", "Durango, CO", "Montrose, CO", "St. George, UT"],
-      "states": ["AZ", "CO", "UT"],
-      "parks": ["petrified-forest", "mesa-verde"],
-      "pin": { "lat": 37.18, "lng": -108.49 }
+      "places": [
+        "Holbrook, AZ",
+        "Durango, CO",
+        "Montrose, CO",
+        "St. George, UT"
+      ],
+      "states": [
+        "AZ",
+        "CO",
+        "UT"
+      ],
+      "parks": [
+        "petrified-forest",
+        "mesa-verde",
+        "black-canyon"
+      ],
+      "pin": {
+        "lat": 37.18,
+        "lng": -108.49
+      }
     },
     {
       "id": "las-vegas-2026",
@@ -43,10 +149,17 @@
       "start": "2026-03",
       "end": "2026-03",
       "kind": "city",
-      "places": ["Las Vegas, NV"],
-      "states": ["NV"],
+      "places": [
+        "Las Vegas, NV"
+      ],
+      "states": [
+        "NV"
+      ],
       "parks": [],
-      "pin": { "lat": 36.17, "lng": -115.14 }
+      "pin": {
+        "lat": 36.17,
+        "lng": -115.14
+      }
     },
     {
       "id": "joshua-tree-2026",
@@ -55,10 +168,19 @@
       "start": "2026-02",
       "end": "2026-02",
       "kind": "park",
-      "places": ["Joshua Tree, CA"],
-      "states": ["CA"],
-      "parks": ["joshua-tree"],
-      "pin": { "lat": 33.87, "lng": -115.90 }
+      "places": [
+        "Joshua Tree, CA"
+      ],
+      "states": [
+        "CA"
+      ],
+      "parks": [
+        "joshua-tree"
+      ],
+      "pin": {
+        "lat": 33.87,
+        "lng": -115.9
+      }
     },
     {
       "id": "san-francisco-2026",
@@ -67,22 +189,36 @@
       "start": "2025-12",
       "end": "2026-01",
       "kind": "city",
-      "places": ["San Francisco, CA"],
-      "states": ["CA"],
+      "places": [
+        "San Francisco, CA"
+      ],
+      "states": [
+        "CA"
+      ],
       "parks": [],
-      "pin": { "lat": 37.77, "lng": -122.42 }
+      "pin": {
+        "lat": 37.77,
+        "lng": -122.42
+      }
     },
     {
       "id": "sedona-2025",
       "year": 2025,
       "name": "Sedona",
-      "start": null,
-      "end": null,
+      "start": "2025-11",
+      "end": "2025-11",
       "kind": "getaway",
-      "places": ["Sedona, AZ"],
-      "states": ["AZ"],
+      "places": [
+        "Sedona, AZ"
+      ],
+      "states": [
+        "AZ"
+      ],
       "parks": [],
-      "pin": { "lat": 34.87, "lng": -111.76 }
+      "pin": {
+        "lat": 34.87,
+        "lng": -111.76
+      }
     },
     {
       "id": "alaska-2025",
@@ -91,10 +227,27 @@
       "start": "2025-06",
       "end": "2025-06",
       "kind": "park",
-      "places": ["Anchorage", "Seward", "Homer", "Talkeetna", "Palmer", "McCarthy", "Valdez"],
-      "states": ["AK"],
-      "parks": ["kenai-fjords", "denali", "wrangell-st-elias"],
-      "pin": { "lat": 61.22, "lng": -149.90 }
+      "places": [
+        "Anchorage",
+        "Seward",
+        "Homer",
+        "Talkeetna",
+        "Palmer",
+        "McCarthy",
+        "Valdez"
+      ],
+      "states": [
+        "AK"
+      ],
+      "parks": [
+        "kenai-fjords",
+        "denali",
+        "wrangell-st-elias"
+      ],
+      "pin": {
+        "lat": 61.22,
+        "lng": -149.9
+      }
     },
     {
       "id": "pinnacles-2025",
@@ -103,10 +256,19 @@
       "start": "2025-03",
       "end": "2025-03",
       "kind": "park",
-      "places": ["Pinnacles, CA"],
-      "states": ["CA"],
-      "parks": ["pinnacles"],
-      "pin": { "lat": 36.49, "lng": -121.18 }
+      "places": [
+        "Pinnacles, CA"
+      ],
+      "states": [
+        "CA"
+      ],
+      "parks": [
+        "pinnacles"
+      ],
+      "pin": {
+        "lat": 36.49,
+        "lng": -121.18
+      }
     },
     {
       "id": "death-valley-2025",
@@ -115,10 +277,19 @@
       "start": "2025-03",
       "end": "2025-03",
       "kind": "park",
-      "places": ["Death Valley, CA"],
-      "states": ["CA"],
-      "parks": ["death-valley"],
-      "pin": { "lat": 36.51, "lng": -117.08 }
+      "places": [
+        "Death Valley, CA"
+      ],
+      "states": [
+        "CA"
+      ],
+      "parks": [
+        "death-valley"
+      ],
+      "pin": {
+        "lat": 36.51,
+        "lng": -117.08
+      }
     },
     {
       "id": "san-francisco-2024",
@@ -127,10 +298,17 @@
       "start": "2024-12",
       "end": "2024-12",
       "kind": "city",
-      "places": ["San Francisco, CA"],
-      "states": ["CA"],
+      "places": [
+        "San Francisco, CA"
+      ],
+      "states": [
+        "CA"
+      ],
       "parks": [],
-      "pin": { "lat": 37.77, "lng": -122.42 }
+      "pin": {
+        "lat": 37.77,
+        "lng": -122.42
+      }
     },
     {
       "id": "acadia-2024",
@@ -139,10 +317,19 @@
       "start": "2024-09",
       "end": "2024-09",
       "kind": "park",
-      "places": ["Bar Harbor, ME"],
-      "states": ["ME"],
-      "parks": ["acadia"],
-      "pin": { "lat": 44.34, "lng": -68.27 }
+      "places": [
+        "Bar Harbor, ME"
+      ],
+      "states": [
+        "ME"
+      ],
+      "parks": [
+        "acadia"
+      ],
+      "pin": {
+        "lat": 44.34,
+        "lng": -68.27
+      }
     },
     {
       "id": "san-diego-2024",
@@ -151,10 +338,17 @@
       "start": "2024-07",
       "end": "2024-07",
       "kind": "city",
-      "places": ["San Diego, CA"],
-      "states": ["CA"],
+      "places": [
+        "San Diego, CA"
+      ],
+      "states": [
+        "CA"
+      ],
       "parks": [],
-      "pin": { "lat": 32.76, "lng": -117.23 }
+      "pin": {
+        "lat": 32.76,
+        "lng": -117.23
+      }
     },
     {
       "id": "sequoia-kings-canyon-2024",
@@ -163,10 +357,21 @@
       "start": "2024-07",
       "end": "2024-07",
       "kind": "park",
-      "places": ["Sequoia, CA", "Kings Canyon, CA"],
-      "states": ["CA"],
-      "parks": ["sequoia", "kings-canyon"],
-      "pin": { "lat": 36.49, "lng": -118.57 }
+      "places": [
+        "Sequoia, CA",
+        "Kings Canyon, CA"
+      ],
+      "states": [
+        "CA"
+      ],
+      "parks": [
+        "sequoia",
+        "kings-canyon"
+      ],
+      "pin": {
+        "lat": 36.49,
+        "lng": -118.57
+      }
     },
     {
       "id": "las-vegas-2024",
@@ -175,10 +380,17 @@
       "start": "2024-04",
       "end": "2024-05",
       "kind": "city",
-      "places": ["Las Vegas, NV"],
-      "states": ["NV"],
+      "places": [
+        "Las Vegas, NV"
+      ],
+      "states": [
+        "NV"
+      ],
       "parks": [],
-      "pin": { "lat": 36.17, "lng": -115.14 }
+      "pin": {
+        "lat": 36.17,
+        "lng": -115.14
+      }
     },
     {
       "id": "sedona-2024",
@@ -187,10 +399,17 @@
       "start": "2024-02",
       "end": "2024-02",
       "kind": "getaway",
-      "places": ["Sedona, AZ"],
-      "states": ["AZ"],
+      "places": [
+        "Sedona, AZ"
+      ],
+      "states": [
+        "AZ"
+      ],
       "parks": [],
-      "pin": { "lat": 34.87, "lng": -111.76 }
+      "pin": {
+        "lat": 34.87,
+        "lng": -111.76
+      }
     },
     {
       "id": "arches-havasu-2023",
@@ -199,17 +418,77 @@
       "start": "2023-11",
       "end": "2023-11",
       "kind": "road-trip",
-      "places": ["St. George, UT", "Moab, UT", "Lake Havasu City, AZ", "Las Vegas, NV"],
-      "states": ["UT", "AZ", "NV"],
-      "parks": ["arches"],
-      "pin": { "lat": 38.73, "lng": -109.59 },
+      "places": [
+        "St. George, UT",
+        "Moab, UT",
+        "Lake Havasu City, AZ",
+        "Las Vegas, NV"
+      ],
+      "states": [
+        "UT",
+        "AZ",
+        "NV"
+      ],
+      "parks": [
+        "arches",
+        "canyonlands",
+        "capitol-reef"
+      ],
+      "pin": {
+        "lat": 38.73,
+        "lng": -109.59
+      },
       "route": [
-        { "name": "Los Angeles", "lat": 34.05, "lng": -118.24 },
-        { "name": "St. George", "lat": 37.10, "lng": -113.58 },
-        { "name": "Moab", "lat": 38.57, "lng": -109.55 },
-        { "name": "Lake Havasu City", "lat": 34.48, "lng": -114.32 },
-        { "name": "Las Vegas", "lat": 36.17, "lng": -115.14 },
-        { "name": "Los Angeles", "lat": 34.05, "lng": -118.24 }
+        {
+          "name": "Los Angeles",
+          "lat": 34.05,
+          "lng": -118.24
+        },
+        {
+          "name": "St. George",
+          "lat": 37.1,
+          "lng": -113.6
+        },
+        {
+          "name": "Moab",
+          "lat": 38.6,
+          "lng": -109.5
+        },
+        {
+          "name": "Arches National Park",
+          "lat": 38.73,
+          "lng": -109.59
+        },
+        {
+          "name": "Canyonlands National Park",
+          "lat": 38.46,
+          "lng": -109.82
+        },
+        {
+          "name": "Capitol Reef National Park",
+          "lat": 38.29,
+          "lng": -111.26
+        },
+        {
+          "name": "Tuba City",
+          "lat": 36.13,
+          "lng": -111.24
+        },
+        {
+          "name": "Lake Havasu City",
+          "lat": 34.5,
+          "lng": -114.3
+        },
+        {
+          "name": "Las Vegas",
+          "lat": 36.1,
+          "lng": -115.2
+        },
+        {
+          "name": "Los Angeles",
+          "lat": 34.05,
+          "lng": -118.24
+        }
       ]
     },
     {
@@ -219,23 +498,116 @@
       "start": "2023-06",
       "end": "2023-07",
       "kind": "road-trip",
-      "places": ["Point Reyes", "Eureka", "Portland", "Multnomah Falls", "Seattle", "Sacramento"],
-      "states": ["CA", "OR", "WA"],
-      "parks": ["redwood", "olympic", "mount-rainier", "crater-lake"],
-      "pin": { "lat": 47.80, "lng": -123.60 },
+      "places": [
+        "Point Reyes",
+        "Eureka",
+        "Portland",
+        "Multnomah Falls",
+        "Seattle",
+        "Sacramento"
+      ],
+      "states": [
+        "CA",
+        "OR",
+        "WA"
+      ],
+      "parks": [
+        "redwood",
+        "olympic",
+        "north-cascades",
+        "mount-rainier",
+        "crater-lake"
+      ],
+      "pin": {
+        "lat": 47.8,
+        "lng": -123.6
+      },
       "route": [
-        { "name": "Los Angeles", "lat": 34.05, "lng": -118.24 },
-        { "name": "Point Reyes", "lat": 38.07, "lng": -122.88 },
-        { "name": "Eureka", "lat": 40.80, "lng": -124.16 },
-        { "name": "Redwood", "lat": 41.21, "lng": -124.00 },
-        { "name": "Portland", "lat": 45.52, "lng": -122.68 },
-        { "name": "Multnomah Falls", "lat": 45.58, "lng": -122.12 },
-        { "name": "Seattle", "lat": 47.61, "lng": -122.33 },
-        { "name": "Olympic", "lat": 47.80, "lng": -123.60 },
-        { "name": "Mount Rainier", "lat": 46.85, "lng": -121.73 },
-        { "name": "Crater Lake", "lat": 42.94, "lng": -122.10 },
-        { "name": "Sacramento", "lat": 38.58, "lng": -121.49 },
-        { "name": "Los Angeles", "lat": 34.05, "lng": -118.24 }
+        {
+          "name": "Los Angeles",
+          "lat": 34.05,
+          "lng": -118.24
+        },
+        {
+          "name": "Point Reyes Lighthouse",
+          "lat": 38.0,
+          "lng": -123.02
+        },
+        {
+          "name": "Muir Woods",
+          "lat": 37.9,
+          "lng": -122.58
+        },
+        {
+          "name": "Drive-Thru Tree, Leggett",
+          "lat": 39.87,
+          "lng": -123.72
+        },
+        {
+          "name": "Redwood National Park",
+          "lat": 41.3,
+          "lng": -124.02
+        },
+        {
+          "name": "Silver Falls State Park",
+          "lat": 44.88,
+          "lng": -122.65
+        },
+        {
+          "name": "Multnomah Falls",
+          "lat": 45.58,
+          "lng": -122.12
+        },
+        {
+          "name": "Tumwater Falls",
+          "lat": 47.01,
+          "lng": -122.9
+        },
+        {
+          "name": "Hoh Rain Forest",
+          "lat": 47.86,
+          "lng": -123.93
+        },
+        {
+          "name": "Lake Crescent",
+          "lat": 48.06,
+          "lng": -123.8
+        },
+        {
+          "name": "Seattle",
+          "lat": 47.6,
+          "lng": -122.3
+        },
+        {
+          "name": "Diablo Lake, North Cascades",
+          "lat": 48.71,
+          "lng": -121.13
+        },
+        {
+          "name": "Paradise, Mount Rainier",
+          "lat": 46.79,
+          "lng": -121.73
+        },
+        {
+          "name": "Diamond Lake",
+          "lat": 43.17,
+          "lng": -122.14
+        },
+        {
+          "name": "Crater Lake National Park",
+          "lat": 42.94,
+          "lng": -122.11
+        },
+        {
+          "name": "Sacramento",
+          "lat": 38.6,
+          "lng": -121.4
+        },
+        {
+          "name": "Los Angeles",
+          "lat": 34.05,
+          "lng": -118.24
+        }
       ]
     },
     {
@@ -245,10 +617,19 @@
       "start": "2023-03",
       "end": "2023-04",
       "kind": "park",
-      "places": ["Death Valley, CA"],
-      "states": ["CA"],
-      "parks": ["death-valley"],
-      "pin": { "lat": 36.51, "lng": -117.08 }
+      "places": [
+        "Death Valley, CA"
+      ],
+      "states": [
+        "CA"
+      ],
+      "parks": [
+        "death-valley"
+      ],
+      "pin": {
+        "lat": 36.51,
+        "lng": -117.08
+      }
     },
     {
       "id": "thanksgiving-southwest-2022",
@@ -272,27 +653,112 @@
         "Chiricahua",
         "Biosphere 2"
       ],
-      "states": ["AZ", "NM"],
-      "parks": ["carlsbad-caverns", "white-sands"],
-      "pin": { "lat": 32.78, "lng": -106.17 },
+      "states": [
+        "AZ",
+        "NM",
+        "TX"
+      ],
+      "parks": [
+        "carlsbad-caverns",
+        "guadalupe-mountains",
+        "white-sands",
+        "saguaro"
+      ],
+      "pin": {
+        "lat": 32.78,
+        "lng": -106.17
+      },
       "route": [
-        { "name": "Los Angeles", "lat": 34.05, "lng": -118.24 },
-        { "name": "Flagstaff", "lat": 35.20, "lng": -111.65 },
-        { "name": "Meteor Crater", "lat": 35.03, "lng": -111.02 },
-        { "name": "Monument Valley", "lat": 36.98, "lng": -110.11 },
-        { "name": "Four Corners", "lat": 37.00, "lng": -109.05 },
-        { "name": "Bisti Badlands", "lat": 36.26, "lng": -108.25 },
-        { "name": "Chaco", "lat": 36.06, "lng": -107.96 },
-        { "name": "Bandelier", "lat": 35.78, "lng": -106.27 },
-        { "name": "Albuquerque", "lat": 35.08, "lng": -106.65 },
-        { "name": "Roswell", "lat": 33.39, "lng": -104.52 },
-        { "name": "Carlsbad Caverns", "lat": 32.15, "lng": -104.56 },
-        { "name": "White Sands", "lat": 32.78, "lng": -106.17 },
-        { "name": "Las Cruces", "lat": 32.32, "lng": -106.76 },
-        { "name": "Gila Cliff Dwellings", "lat": 33.23, "lng": -108.27 },
-        { "name": "Chiricahua", "lat": 32.01, "lng": -109.36 },
-        { "name": "Biosphere 2", "lat": 32.58, "lng": -110.85 },
-        { "name": "Los Angeles", "lat": 34.05, "lng": -118.24 }
+        {
+          "name": "Los Angeles",
+          "lat": 34.05,
+          "lng": -118.24
+        },
+        {
+          "name": "Flagstaff",
+          "lat": 35.2,
+          "lng": -111.7
+        },
+        {
+          "name": "Meteor Crater",
+          "lat": 35.03,
+          "lng": -111.02
+        },
+        {
+          "name": "Monument Valley",
+          "lat": 37.0,
+          "lng": -110.1
+        },
+        {
+          "name": "Four Corners Monument",
+          "lat": 37.0,
+          "lng": -109.05
+        },
+        {
+          "name": "Bisti Badlands",
+          "lat": 36.27,
+          "lng": -108.25
+        },
+        {
+          "name": "Chaco Culture NHP",
+          "lat": 36.06,
+          "lng": -107.96
+        },
+        {
+          "name": "Sandia Peak Tramway",
+          "lat": 35.19,
+          "lng": -106.48
+        },
+        {
+          "name": "Albuquerque",
+          "lat": 35.1,
+          "lng": -106.7
+        },
+        {
+          "name": "International UFO Museum, Roswell",
+          "lat": 33.39,
+          "lng": -104.52
+        },
+        {
+          "name": "Carlsbad Caverns National Park",
+          "lat": 32.18,
+          "lng": -104.44
+        },
+        {
+          "name": "Guadalupe Mountains National Park",
+          "lat": 31.89,
+          "lng": -104.86
+        },
+        {
+          "name": "Las Cruces",
+          "lat": 32.3,
+          "lng": -106.8
+        },
+        {
+          "name": "White Sands National Park",
+          "lat": 32.78,
+          "lng": -106.17
+        },
+        {
+          "name": "Gila Cliff Dwellings",
+          "lat": 33.23,
+          "lng": -108.27
+        },
+        {
+          "name": "Chiricahua National Monument",
+          "lat": 32.01,
+          "lng": -109.36
+        },
+        {
+          "name": "Saguaro National Park",
+          "lat": 32.18,
+          "lng": -110.74
+        },
+        {
+          "name": "Los Angeles",
+          "lat": 34.05,
+          "lng": -118.24
+        }
       ]
     },
     {
@@ -302,22 +768,39 @@
       "start": "2022-09",
       "end": "2022-09",
       "kind": "park",
-      "places": ["Yosemite, CA"],
-      "states": ["CA"],
-      "parks": ["yosemite"],
-      "pin": { "lat": 37.87, "lng": -119.54 }
+      "places": [
+        "Yosemite, CA"
+      ],
+      "states": [
+        "CA"
+      ],
+      "parks": [
+        "yosemite"
+      ],
+      "pin": {
+        "lat": 37.87,
+        "lng": -119.54
+      }
     },
     {
       "id": "glamping-2022",
       "year": 2022,
-      "name": "Glamping",
+      "name": "Santa Barbara glamping",
       "start": "2022-09",
       "end": "2022-09",
       "kind": "getaway",
-      "places": [],
-      "states": [],
+      "places": [
+        "Goleta, CA",
+        "Santa Barbara, CA"
+      ],
+      "states": [
+        "CA"
+      ],
       "parks": [],
-      "pin": null
+      "pin": {
+        "lat": 34.42,
+        "lng": -119.7
+      }
     },
     {
       "id": "las-vegas-2022",
@@ -326,10 +809,36 @@
       "start": "2022-08",
       "end": "2022-08",
       "kind": "city",
-      "places": ["Las Vegas, NV"],
-      "states": ["NV"],
+      "places": [
+        "Las Vegas, NV"
+      ],
+      "states": [
+        "NV"
+      ],
       "parks": [],
-      "pin": { "lat": 36.17, "lng": -115.14 }
+      "pin": {
+        "lat": 36.17,
+        "lng": -115.14
+      }
+    },
+    {
+      "id": "catalina-2022",
+      "year": 2022,
+      "name": "Catalina Island",
+      "start": "2022-08",
+      "end": "2022-08",
+      "kind": "getaway",
+      "places": [
+        "Avalon, CA"
+      ],
+      "states": [
+        "CA"
+      ],
+      "parks": [],
+      "pin": {
+        "lat": 33.34,
+        "lng": -118.33
+      }
     },
     {
       "id": "new-york-2022",
@@ -338,10 +847,19 @@
       "start": "2022-07",
       "end": "2022-07",
       "kind": "city",
-      "places": ["Manhattan", "Brooklyn", "Statue of Liberty"],
-      "states": ["NY"],
+      "places": [
+        "Manhattan",
+        "Brooklyn",
+        "Statue of Liberty"
+      ],
+      "states": [
+        "NY"
+      ],
       "parks": [],
-      "pin": { "lat": 40.71, "lng": -74.01 }
+      "pin": {
+        "lat": 40.71,
+        "lng": -74.01
+      }
     },
     {
       "id": "maui-2022",
@@ -350,22 +868,21 @@
       "start": "2022-06",
       "end": "2022-06",
       "kind": "getaway",
-      "places": ["Lahaina", "Road to Hana", "Haleakalā"],
-      "states": ["HI"],
-      "parks": ["haleakala"],
-      "pin": { "lat": 20.80, "lng": -156.33 }
-    },
-    {
-      "id": "catalina-2022",
-      "year": 2022,
-      "name": "Catalina Island",
-      "start": null,
-      "end": null,
-      "kind": "getaway",
-      "places": ["Avalon, CA"],
-      "states": ["CA"],
-      "parks": [],
-      "pin": { "lat": 33.34, "lng": -118.33 }
+      "places": [
+        "Lahaina",
+        "Road to Hana",
+        "Haleakalā"
+      ],
+      "states": [
+        "HI"
+      ],
+      "parks": [
+        "haleakala"
+      ],
+      "pin": {
+        "lat": 20.8,
+        "lng": -156.33
+      }
     },
     {
       "id": "rocky-mountain-2021",
@@ -374,19 +891,76 @@
       "start": "2021-11",
       "end": "2021-11",
       "kind": "road-trip",
-      "places": ["Sedona, AZ", "Moab, UT", "Denver, CO", "Flagstaff, AZ"],
-      "states": ["AZ", "UT", "CO"],
-      "parks": ["rocky-mountain", "great-sand-dunes"],
-      "pin": { "lat": 40.34, "lng": -105.68 },
+      "places": [
+        "Sedona, AZ",
+        "Moab, UT",
+        "Denver, CO",
+        "Flagstaff, AZ"
+      ],
+      "states": [
+        "AZ",
+        "UT",
+        "CO"
+      ],
+      "parks": [
+        "rocky-mountain",
+        "great-sand-dunes"
+      ],
+      "pin": {
+        "lat": 40.34,
+        "lng": -105.68
+      },
       "route": [
-        { "name": "Los Angeles", "lat": 34.05, "lng": -118.24 },
-        { "name": "Sedona", "lat": 34.87, "lng": -111.76 },
-        { "name": "Moab", "lat": 38.57, "lng": -109.55 },
-        { "name": "Rocky Mountain", "lat": 40.34, "lng": -105.68 },
-        { "name": "Denver", "lat": 39.74, "lng": -104.99 },
-        { "name": "Great Sand Dunes", "lat": 37.73, "lng": -105.51 },
-        { "name": "Flagstaff", "lat": 35.20, "lng": -111.65 },
-        { "name": "Los Angeles", "lat": 34.05, "lng": -118.24 }
+        {
+          "name": "Los Angeles",
+          "lat": 34.05,
+          "lng": -118.24
+        },
+        {
+          "name": "Sedona",
+          "lat": 34.9,
+          "lng": -111.8
+        },
+        {
+          "name": "Cathedral Rock",
+          "lat": 34.82,
+          "lng": -111.79
+        },
+        {
+          "name": "Chapel of the Holy Cross",
+          "lat": 34.83,
+          "lng": -111.77
+        },
+        {
+          "name": "Moab",
+          "lat": 38.6,
+          "lng": -109.5
+        },
+        {
+          "name": "Vail",
+          "lat": 39.64,
+          "lng": -106.37
+        },
+        {
+          "name": "Rocky Mountain National Park",
+          "lat": 40.34,
+          "lng": -105.68
+        },
+        {
+          "name": "Great Sand Dunes National Park",
+          "lat": 37.79,
+          "lng": -105.59
+        },
+        {
+          "name": "Flagstaff",
+          "lat": 35.2,
+          "lng": -111.7
+        },
+        {
+          "name": "Los Angeles",
+          "lat": 34.05,
+          "lng": -118.24
+        }
       ]
     }
   ]

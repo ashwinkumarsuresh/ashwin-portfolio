@@ -5,10 +5,10 @@ import { atlasStats, groupPins, matchesFilter, monthLabel, parkPassport, STATE_F
 const { trips, parks } = data;
 
 describe('trips.json', () => {
-    it('matches the spec headline: 25 trips, 22 parks, 12 states, 2021–2026', () => {
+    it('matches the trips site: 25 trips, 28 parks, 13 states, 2021–2026', () => {
         const s = atlasStats(trips);
-        expect(s).toMatchObject({ trips: 25, parks: 22, states: 12, firstYear: 2021, lastYear: 2026, years: 6 });
-        expect(s.stateList).toEqual(['AK', 'AZ', 'CA', 'CO', 'HI', 'ME', 'NM', 'NV', 'NY', 'OR', 'UT', 'WA']);
+        expect(s).toMatchObject({ trips: 25, parks: 28, states: 13, firstYear: 2021, lastYear: 2026, years: 6 });
+        expect(s.stateList).toEqual(['AK', 'AZ', 'CA', 'CO', 'HI', 'ME', 'NM', 'NV', 'NY', 'OR', 'TX', 'UT', 'WA']);
     });
 
     it('keeps only places, months and parks (no costs, stays, addresses or bookings)', () => {
@@ -55,7 +55,8 @@ describe('atlas helpers', () => {
         const groups = groupPins(trips);
         const vegas = groups.find((g) => g.key === '36.17,-115.14');
         expect(vegas.trips).toHaveLength(3);
-        expect(groups.flatMap((g) => g.trips).some((t) => t.id === 'glamping-2022')).toBe(false);
+        expect(groups.flatMap((g) => g.trips)).toHaveLength(25);
+        expect(groupPins([{ id: 'x', pin: null }])).toEqual([]);
     });
 
     it('filters road trips, park trips and cities', () => {
@@ -68,7 +69,7 @@ describe('atlas helpers', () => {
 
     it('stamps each park once, in first-visit order, counting repeat visits', () => {
         const passport = parkPassport(trips, parks);
-        expect(passport).toHaveLength(22);
+        expect(passport).toHaveLength(28);
         expect(passport[0].firstYear).toBe(2021);
         expect(passport.find((p) => p.id === 'death-valley')).toMatchObject({ firstYear: 2023, visits: 2 });
     });
