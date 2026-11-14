@@ -5,10 +5,10 @@ import { atlasStats, groupPins, matchesFilter, monthLabel, parkPassport, STATE_F
 const { trips, parks } = data;
 
 describe('trips.json', () => {
-    it('matches the trips site: 25 trips, 28 parks, 13 states, 2021–2026', () => {
-        const s = atlasStats(trips);
-        expect(s).toMatchObject({ trips: 25, parks: 28, states: 13, firstYear: 2021, lastYear: 2026, years: 6 });
-        expect(s.stateList).toEqual(['AK', 'AZ', 'CA', 'CO', 'HI', 'ME', 'NM', 'NV', 'NY', 'OR', 'TX', 'UT', 'WA']);
+    it('matches the trips site: 25 trips, 33 parks, 14 states, 2021–2026', () => {
+        const s = atlasStats(trips, data.stampBook, parks);
+        expect(s).toMatchObject({ trips: 25, parks: 33, states: 14, firstYear: 2021, lastYear: 2026, years: 6 });
+        expect(s.stateList).toEqual(['AK', 'AZ', 'CA', 'CO', 'HI', 'ME', 'NM', 'NV', 'NY', 'OR', 'TX', 'UT', 'WA', 'WY']);
     });
 
     it('keeps only places, months and parks (no costs, stays, addresses or bookings)', () => {
@@ -32,6 +32,7 @@ describe('trips.json', () => {
             t.states.forEach((s) => expect(STATE_FIPS[s], `${t.id} → ${s}`).toBeDefined());
             if (t.start) expect(t.start).toMatch(/^\d{4}-\d{2}$/);
         }
+        data.stampBook.forEach((p) => expect(parks[p], p).toBeDefined());
     });
 
     it('draws route lines for the four big road trips', () => {
@@ -68,8 +69,10 @@ describe('atlas helpers', () => {
     });
 
     it('stamps each park once, in first-visit order, counting repeat visits', () => {
-        const passport = parkPassport(trips, parks);
-        expect(passport).toHaveLength(28);
+        const passport = parkPassport(trips, parks, data.stampBook);
+        expect(passport).toHaveLength(33);
+        expect(passport.slice(-5).map((p) => p.id)).toEqual(data.stampBook);
+        expect(passport.slice(-5).every((p) => p.firstYear === null)).toBe(true);
         expect(passport[0].firstYear).toBe(2021);
         expect(passport.find((p) => p.id === 'death-valley')).toMatchObject({ firstYear: 2023, visits: 2 });
     });

@@ -8,6 +8,7 @@ import {
     matchesFilter,
     monthLabel,
     parkPassport,
+    stampBookStates,
     pinLabel,
     tripsByYear,
 } from '../lib/atlas';
@@ -16,7 +17,7 @@ import {
 // editorial style (paper, ink rules, mono labels, one ochre accent).
 // Data is hand-kept in src/data/trips.json: places, months and parks only —
 // never costs, stays, addresses or booking details.
-const { trips, parks } = data;
+const { trips, parks, stampBook = [] } = data;
 
 const Label = ({ children, className = '' }) => (
     <h2 className={`font-mono text-[11px] tracking-[0.2em] uppercase text-ink-soft mb-2 ${className}`}>
@@ -70,7 +71,7 @@ const ParkStamp = ({ park, index }) => (
                 {park.name}
             </span>
             <span className="font-mono text-[9px] tracking-[0.1em] text-ink-soft">
-                {park.firstYear}
+                {park.firstYear ?? 'Stamp book'}
                 {park.visits > 1 ? ` · ×${park.visits}` : ''}
             </span>
         </div>
@@ -85,13 +86,22 @@ const AtlasPage = () => {
         document.title = 'Travel atlas — Ashwin Kumar Suresh';
     }, []);
 
-    const stats = useMemo(() => atlasStats(trips), []);
-    const passport = useMemo(() => parkPassport(trips, parks), []);
+    const stats = useMemo(() => atlasStats(trips, stampBook, parks), []);
+    const passport = useMemo(() => parkPassport(trips, parks, stampBook), []);
 
     const visible = useMemo(() => trips.filter((t) => matchesFilter(t, filter)), [filter]);
     const pins = useMemo(() => groupPins(visible), [visible]);
     const routes = useMemo(() => visible.filter((t) => t.route), [visible]);
-    const visitedStates = useMemo(() => [...new Set(visible.flatMap((t) => t.states))], [visible]);
+    // Stamp-book parks have no trip or pin, but their states still count as visited.
+    const visitedStates = useMemo(
+        () => [
+            ...new Set([
+                ...visible.flatMap((t) => t.states),
+                ...(filter === 'all' || filter === 'parks' ? stampBookStates(stampBook, parks) : []),
+            ]),
+        ],
+        [visible, filter]
+    );
     const years = useMemo(() => tripsByYear(visible), [visible]);
 
     // A pin hidden by the filter drops its selection without extra state.
@@ -120,8 +130,8 @@ const AtlasPage = () => {
                     </h1>
                     <hr className="w-24 border-0 border-t-[3px] border-ochre mb-6" />
                     <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink/85">
-                        {stats.trips} trips, {stats.parks} national parks, {stats.states} states since{' '}
-                        {stats.firstYear}.
+                        {stats.trips} trips since {stats.firstYear}, {stats.parks} national parks,{' '}
+                        {stats.states} states.
                     </p>
                 </header>
 
@@ -236,6 +246,8 @@ const AtlasPage = () => {
                     </Label>
                     <p className="text-[15px] text-ink/80 border-t border-ink pt-4 mb-6">
                         {passport.length} national parks, stamped in the order they were first visited.
+                        {stampBook.length > 0 &&
+                            ' The ones marked “stamp book” are ticked in the family’s park stamp book; their trips aren’t on this page yet.'}
                     </p>
                     <ol className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4">
                         {passport.map((p, i) => (

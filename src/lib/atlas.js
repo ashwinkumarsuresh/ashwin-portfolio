@@ -38,15 +38,21 @@ export function monthLabel(trip) {
     return a === b ? a : `${a} – ${b}`;
 }
 
-export function atlasStats(trips) {
-    const parks = new Set(trips.flatMap((t) => t.parks));
-    const states = new Set(trips.flatMap((t) => t.states));
+// stampBook: parks ticked in the family's stamp book whose trip isn't on the
+// page (no year recorded). They count toward parks and states.
+export function stampBookStates(stampBook = [], parks = {}) {
+    return stampBook.map((id) => parks[id]?.state).filter(Boolean);
+}
+
+export function atlasStats(trips, stampBook = [], parks = {}) {
+    const parkIds = new Set([...trips.flatMap((t) => t.parks), ...stampBook]);
+    const states = new Set([...trips.flatMap((t) => t.states), ...stampBookStates(stampBook, parks)]);
     const years = trips.map((t) => t.year);
     const first = Math.min(...years);
     const last = Math.max(...years);
     return {
         trips: trips.length,
-        parks: parks.size,
+        parks: parkIds.size,
         states: states.size,
         stateList: [...states].sort(),
         firstYear: first,
@@ -87,8 +93,9 @@ export function pinLabel(group) {
     return place.replace(/,\s*[A-Z]{2}$/, '');
 }
 
-// Passport stamps in the order they were first collected.
-export function parkPassport(trips, parks) {
+// Passport stamps in the order they were first collected; stamp-book parks
+// with no recorded year come last.
+export function parkPassport(trips, parks, stampBook = []) {
     const visits = new Map();
     for (const t of trips) {
         for (const id of t.parks) {
@@ -96,15 +103,19 @@ export function parkPassport(trips, parks) {
             visits.get(id).push(t.year);
         }
     }
-    return [...visits.entries()]
-        .map(([id, years]) => ({
-            id,
-            name: parks[id]?.name ?? id,
-            state: parks[id]?.state ?? '',
-            firstYear: Math.min(...years),
-            visits: years.length,
-        }))
-        .sort((a, b) => a.firstYear - b.firstYear || a.name.localeCompare(b.name));
+    const stamps = [...visits.entries()].map(([id, years]) => ({
+        id,
+        name: parks[id]?.name ?? id,
+        state: parks[id]?.state ?? '',
+        firstYear: Math.min(...years),
+        visits: years.length,
+    }));
+    const undated = stampBook
+        .filter((id) => !visits.has(id))
+        .map((id) => ({ id, name: parks[id]?.name ?? id, state: parks[id]?.state ?? '', firstYear: null, visits: 0 }));
+    stamps.sort((a, b) => a.firstYear - b.firstYear || a.name.localeCompare(b.name));
+    undated.sort((a, b) => a.name.localeCompare(b.name));
+    return [...stamps, ...undated];
 }
 
 // Two-letter state code → Census FIPS id used by us-atlas.

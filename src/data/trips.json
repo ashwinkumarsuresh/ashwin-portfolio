@@ -111,8 +111,35 @@
     "saguaro": {
       "name": "Saguaro",
       "state": "AZ"
+    },
+    "bryce-canyon": {
+      "name": "Bryce Canyon",
+      "state": "UT"
+    },
+    "channel-islands": {
+      "name": "Channel Islands",
+      "state": "CA"
+    },
+    "grand-canyon": {
+      "name": "Grand Canyon",
+      "state": "AZ"
+    },
+    "yellowstone": {
+      "name": "Yellowstone",
+      "state": "WY"
+    },
+    "zion": {
+      "name": "Zion",
+      "state": "UT"
     }
   },
+  "stampBook": [
+    "bryce-canyon",
+    "channel-islands",
+    "grand-canyon",
+    "yellowstone",
+    "zion"
+  ],
   "trips": [
     {
       "id": "mesa-verde-2026",
