@@ -38,15 +38,19 @@ export function monthLabel(trip) {
     return a === b ? a : `${a} – ${b}`;
 }
 
-export function atlasStats(trips) {
-    const parks = new Set(trips.flatMap((t) => t.parks));
-    const states = new Set(trips.flatMap((t) => t.states));
+// `earlier` holds parks from the family's stamp book that predate the trip
+// log: no year, but a pin and a passport stamp. They count toward parks and
+// states, not toward trips or years on the road.
+export function atlasStats(trips, earlier = []) {
+    const all = [...trips, ...earlier];
+    const parkIds = new Set(all.flatMap((t) => t.parks));
+    const states = new Set(all.flatMap((t) => t.states));
     const years = trips.map((t) => t.year);
     const first = Math.min(...years);
     const last = Math.max(...years);
     return {
         trips: trips.length,
-        parks: parks.size,
+        parks: parkIds.size,
         states: states.size,
         stateList: [...states].sort(),
         firstYear: first,
@@ -55,14 +59,22 @@ export function atlasStats(trips) {
     };
 }
 
+// Label for entries with no year: "Before 2021" when the log starts in 2021.
+export const earlierLabel = (firstYear) => `Before ${firstYear}`;
+
+// Mark stamp-book parks as year-less entries the page can list beside trips.
+export const earlierEntries = (earlier = []) => earlier.map((e) => ({ ...e, year: null, start: null, end: null }));
+
 // Newest year first; trips keep the hand-kept file order within a year.
+// Entries with year null form the last group.
 export function tripsByYear(trips) {
     const byYear = new Map();
     for (const t of trips) {
         if (!byYear.has(t.year)) byYear.set(t.year, []);
         byYear.get(t.year).push(t);
     }
-    return [...byYear.entries()].sort((a, b) => b[0] - a[0]);
+    // Year-less (earlier) entries sort after the oldest year.
+    return [...byYear.entries()].sort((a, b) => (b[0] ?? -Infinity) - (a[0] ?? -Infinity));
 }
 
 export const pinKey = (pin) => `${pin.lat},${pin.lng}`;
@@ -87,24 +99,29 @@ export function pinLabel(group) {
     return place.replace(/,\s*[A-Z]{2}$/, '');
 }
 
-// Passport stamps in the order they were first collected.
-export function parkPassport(trips, parks) {
+// Passport stamps in the order they were first collected: the year-less
+// earlier parks first, then by first visit.
+export function parkPassport(entries, parks) {
     const visits = new Map();
-    for (const t of trips) {
+    for (const t of entries) {
         for (const id of t.parks) {
             if (!visits.has(id)) visits.set(id, []);
-            visits.get(id).push(t.year);
+            visits.get(id).push(t.year ?? null);
         }
     }
+    const rank = (y) => (y === null ? -Infinity : y);
     return [...visits.entries()]
-        .map(([id, years]) => ({
-            id,
-            name: parks[id]?.name ?? id,
-            state: parks[id]?.state ?? '',
-            firstYear: Math.min(...years),
-            visits: years.length,
-        }))
-        .sort((a, b) => a.firstYear - b.firstYear || a.name.localeCompare(b.name));
+        .map(([id, years]) => {
+            const dated = years.filter((y) => y !== null);
+            return {
+                id,
+                name: parks[id]?.name ?? id,
+                state: parks[id]?.state ?? '',
+                firstYear: years.includes(null) || !dated.length ? null : Math.min(...dated),
+                visits: years.length,
+            };
+        })
+        .sort((a, b) => rank(a.firstYear) - rank(b.firstYear) || a.name.localeCompare(b.name));
 }
 
 // Two-letter state code → Census FIPS id used by us-atlas.

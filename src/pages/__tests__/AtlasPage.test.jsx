@@ -8,9 +8,11 @@ describe('AtlasPage', () => {
     it('renders the headline, stats, timeline and passport', () => {
         render(<AtlasPage />);
         expect(screen.getByRole('heading', { level: 1, name: 'Travel atlas' })).toBeInTheDocument();
-        expect(screen.getByText('25 trips, 28 national parks, 13 states since 2021.')).toBeInTheDocument();
-        expect(screen.getAllByRole('heading', { level: 4 })).toHaveLength(25);
-        expect(screen.getByText(/28 national parks, stamped/)).toBeInTheDocument();
+        expect(screen.getByText('25 trips since 2021, 33 national parks, 14 states.')).toBeInTheDocument();
+        expect(screen.getAllByRole('heading', { level: 4 })).toHaveLength(30);
+        expect(screen.getByRole('heading', { level: 3, name: 'Before 2021' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Zion: Zion National Park' })).toBeInTheDocument();
+        expect(screen.getByText(/33 national parks, stamped/)).toBeInTheDocument();
         expect(document.title).toMatch(/Travel atlas/);
     });
 
