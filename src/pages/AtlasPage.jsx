@@ -116,64 +116,11 @@ const AtlasPage = () => {
     ];
 
     return (
-        <div className="pt-28 md:pt-36 pb-6">
+        <div className="pt-16 md:pt-24 pb-6">
             <div className="max-w-[1080px] mx-auto px-6">
-                {/* 1. Header */}
-                <header className="masthead-settle">
-                    <p className="font-mono text-[11px] tracking-[0.18em] uppercase text-ochre">
-                        Off the clock · {stats.firstYear}–{stats.lastYear}
-                    </p>
-                    <h1 className="font-display font-semibold text-[clamp(3rem,8vw,5.5rem)] leading-[0.98] tracking-tight mt-5 mb-4">
-                        Travel atlas
-                    </h1>
-                    <hr className="w-24 border-0 border-t-[3px] border-ochre mb-6" />
-                    <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink/85">
-                        {stats.trips} trips since {stats.firstYear}, {stats.parks} national parks,{' '}
-                        {stats.states} states.
-                    </p>
-                </header>
-
-                {/* 2. Stat strip */}
-                <dl className="grid grid-cols-2 md:grid-cols-4 border-t border-ink mt-10">
-                    {statItems.map((s, i) => (
-                        <div
-                            key={s.label}
-                            className={`py-5 pr-4 border-b border-rule-soft ${i % 2 === 1 ? 'pl-4 border-l' : ''} ${
-                                i > 0 ? 'md:pl-4 md:border-l' : ''
-                            }`}
-                        >
-                            <dt className="font-mono text-[10px] tracking-[0.14em] uppercase text-ink-soft">{s.label}</dt>
-                            <dd className="font-display font-semibold text-4xl md:text-5xl mt-1">{s.value}</dd>
-                        </div>
-                    ))}
-                </dl>
-
-                {/* 3–4. Map + filters */}
-                <section aria-labelledby="atlas-map" className="mt-12">
-                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-4">
-                        <Label className="mb-0">
-                            <span id="atlas-map">The map</span>
-                        </Label>
-                        <div className="flex flex-wrap gap-2" role="group" aria-label="Filter trips">
-                            {FILTERS.map((f) => (
-                                <button
-                                    key={f.id}
-                                    type="button"
-                                    aria-pressed={filter === f.id}
-                                    onClick={() => setFilter(f.id)}
-                                    className={`font-mono text-[11px] tracking-[0.1em] uppercase px-3 py-1.5 border transition-colors ${
-                                        filter === f.id
-                                            ? 'bg-ink text-paper border-ink'
-                                            : 'border-rule-soft text-ink-soft hover:border-ink hover:text-ink'
-                                    }`}
-                                >
-                                    {f.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="border-t border-b border-ink py-4">
+                {/* 1. Map first: it is the picture of where we have been. Filters sit under it. */}
+                <section aria-label="Map of trips" className="masthead-settle">
+                    <div className="-mx-6 md:mx-0 border-b md:border-t border-ink pb-3 md:pt-4">
                         <AtlasMap
                             pins={pins}
                             routes={routes}
@@ -181,9 +128,27 @@ const AtlasPage = () => {
                             selectedKey={selected?.key ?? null}
                             onSelect={toggleSelect}
                         />
-                        <p className="font-mono text-[10px] tracking-[0.08em] text-ink-soft mt-2">
+                        <p className="font-mono text-[10px] tracking-[0.08em] text-ink-soft mt-2 px-6 md:px-0">
                             Shaded: states visited · Dashed: the big road trips, sketched town to town · Tap a pin
                         </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 mt-4" role="group" aria-label="Filter trips">
+                        {FILTERS.map((f) => (
+                            <button
+                                key={f.id}
+                                type="button"
+                                aria-pressed={filter === f.id}
+                                onClick={() => setFilter(f.id)}
+                                className={`font-mono text-[11px] tracking-[0.1em] uppercase px-3 py-1.5 border transition-colors ${
+                                    filter === f.id
+                                        ? 'bg-ink text-paper border-ink'
+                                        : 'border-rule-soft text-ink-soft hover:border-ink hover:text-ink'
+                                }`}
+                            >
+                                {f.label}
+                            </button>
+                        ))}
                     </div>
 
                     {selected && (
@@ -215,7 +180,37 @@ const AtlasPage = () => {
                     )}
                 </section>
 
-                {/* 5. Timeline */}
+                {/* 2. Title and counts */}
+                <header className="mt-10 md:mt-12">
+                    <p className="font-mono text-[11px] tracking-[0.18em] uppercase text-ochre">
+                        Off the clock · {stats.firstYear}–{stats.lastYear}
+                    </p>
+                    <h1 className="font-display font-semibold text-[clamp(3rem,8vw,5.5rem)] leading-[0.98] tracking-tight mt-5 mb-4">
+                        Travel atlas
+                    </h1>
+                    <hr className="w-24 border-0 border-t-[3px] border-ochre mb-6" />
+                    <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink/85">
+                        {stats.trips} trips since {stats.firstYear}, {stats.parks} national parks,{' '}
+                        {stats.states} states.
+                    </p>
+                </header>
+
+                {/* 3. Stat strip */}
+                <dl className="grid grid-cols-2 md:grid-cols-4 border-t border-ink mt-10">
+                    {statItems.map((s, i) => (
+                        <div
+                            key={s.label}
+                            className={`py-5 pr-4 border-b border-rule-soft ${i % 2 === 1 ? 'pl-4 border-l' : ''} ${
+                                i > 0 ? 'md:pl-4 md:border-l' : ''
+                            }`}
+                        >
+                            <dt className="font-mono text-[10px] tracking-[0.14em] uppercase text-ink-soft">{s.label}</dt>
+                            <dd className="font-display font-semibold text-4xl md:text-5xl mt-1">{s.value}</dd>
+                        </div>
+                    ))}
+                </dl>
+
+                {/* 4. Timeline */}
                 <section aria-labelledby="atlas-timeline" className="mt-14">
                     <Label>
                         <span id="atlas-timeline">Every trip</span>
@@ -243,7 +238,7 @@ const AtlasPage = () => {
                     </div>
                 </section>
 
-                {/* 6. Parks passport */}
+                {/* 5. Parks passport */}
                 <section aria-labelledby="atlas-passport" className="mt-14">
                     <Label>
                         <span id="atlas-passport">Parks passport</span>

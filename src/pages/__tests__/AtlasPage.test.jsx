@@ -16,6 +16,13 @@ describe('AtlasPage', () => {
         expect(document.title).toMatch(/Travel atlas/);
     });
 
+    it('opens with the map, title and counts below it', () => {
+        render(<AtlasPage />);
+        const map = screen.getByRole('region', { name: 'Map of trips' });
+        const title = screen.getByRole('heading', { level: 1, name: 'Travel atlas' });
+        expect(map.compareDocumentPosition(title) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
     it('shows the months the trips site knows and every park on its trip', () => {
         render(<AtlasPage />);
         const catalina = document.getElementById('trip-catalina-2022');
