@@ -4,8 +4,9 @@ import React from 'react';
 // no slogans (design doc: editorial "The Quarterly"; portrait added at owner request).
 // The portrait asset carries real alpha (strokes only, background transparent) —
 // blend modes proved unreliable across browsers for hiding its paper background.
-// Every claim in the dek is verifiable: lift + award from KeyAchievements history,
-// Menu Without Borders from the attested abstract.
+// The dek leads with the current focus (owner-written: gen AI build-vs-buy to cut
+// software spend). Every claim after it is verifiable: lift + award from
+// KeyAchievements history, Menu Without Borders from the attested abstract.
 const Hero = () => {
     return (
         <header id="about" className="pt-28 md:pt-36 pb-10 md:pb-14">
@@ -18,15 +19,16 @@ const Hero = () => {
                         Ashwin Kumar<br />Suresh
                     </h1>
                     <hr className="w-24 border-0 border-t-[3px] border-ochre mb-7" />
-                    <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink/85">
-                        Enterprise data architect turned AI builder. Led the award-winning data
-                        platform behind a 2024 CIO 100 Award and engineered a recommendation engine
-                        driving a 1–2% site-wide sales lift.
+                    <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink">
+                        <em className="font-semibold">The fastest payback from gen AI isn’t a chatbot, it’s the software bill.</em>{' '}
+                        I find the paid applications we can rebuild in-house with gen AI, then propose
+                        and build the replacements.
                     </p>
-                    <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink mt-4">
-                        <em className="font-semibold">Now shipping production-grade GenAI applications</em> —
-                        including Menu Without Borders, an automated pipeline processing thousands
-                        of international menu items a day.
+                    <p className="text-xl md:text-[21px] leading-relaxed max-w-[600px] text-ink/85 mt-4">
+                        Enterprise data architect turned AI builder. Led the award-winning data
+                        platform behind a 2024 CIO 100 Award, engineered a recommendation engine
+                        driving a 1–2% site-wide sales lift, and shipped Menu Without Borders, a GenAI
+                        pipeline processing thousands of international menu items a day.
                     </p>
                 </div>
                 <picture className="order-first md:order-none mb-8 md:mb-0 justify-self-center md:justify-self-end">
