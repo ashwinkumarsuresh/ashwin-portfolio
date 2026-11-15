@@ -14,6 +14,7 @@ describe('Hero (masthead)', () => {
         render(<Hero />);
         expect(screen.getByText(/senior manager · ai & bi architecture/i)).toBeInTheDocument();
         expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/Ashwin Kumar\s*Suresh/);
+        expect(screen.getByText(/fastest payback from gen AI/)).toBeInTheDocument();
         expect(screen.getByText(/1–2% site-wide sales lift/)).toBeInTheDocument();
         expect(screen.getByText(/Menu Without Borders/)).toBeInTheDocument();
     });
